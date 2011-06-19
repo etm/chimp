@@ -8,6 +8,7 @@ require 'optparse'
 require 'pp'
 require 'rubygems'
 require ::File::dirname(curpath) + "/lib/ChimpParser"
+require ::File::dirname(curpath) + "/lib/ChimpPlugin"
 require ::File::dirname(curpath) + "/lib/ChimpParser-Grammar"
 require ::File::dirname(curpath) + "/output/screen"
 

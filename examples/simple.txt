@@ -10,7 +10,12 @@ Make a cheap impression. Present via terminal.
 * Bullet stuff
 * More Bullets
 +++
-* Add some stuff
-* Thats about it
+%%lnums
+a = 3
+b = 7
+1.upto(b) do |l|
+  bla
+end  
+%%
 +++
 * Finally

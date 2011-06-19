@@ -124,7 +124,12 @@ module Chimp
             #}}}
         end  
       end
-      def mOP_INCLUDE(data)
+      def mOP_RANGE(data)
+        data.name.each do |n|
+          require "plugins/#{n}"
+          plug = eval(n.upcase).new
+
+        end
       end
 
       def mOP_RED; set_color(1); end

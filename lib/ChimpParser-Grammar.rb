@@ -10,12 +10,13 @@ module Chimp
       #### According to the names the methods are selected ####
 
       P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n([\t ]*\n)*)|\A/,    /^(?=---+)|\z/, true)
-      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                   /\s*(\n|\z)/,true)
+      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                   /[\t ]*(\n|\z)/,true)
       P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n([\t ]*\n)*)|\A/, /^(?=\+\+\++)|\z/, true)
-      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^.([a-z]+,)+/, /(\n|\z)/,true)
-      P_RED         = Pattern.new("P_RED",         /!!/,           /!!/)
-      P_BLUE        = Pattern.new("P_BLUE",        /''/,           /''/)
-      P_STRONG      = Pattern.new("P_STRONG",      /'''|\*\*/,     /\*\*|'''/)
+      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^%%([a-z]+,)*[a-z]+/,             /(\n|\z)/,true)
+      P_RANGE       = Pattern.new("P_RANGE",       /^%%([a-z]+,)*[a-z]+/,             /^%%[\t ]*(\n|\z)/,true)
+      P_RED         = Pattern.new("P_RED",         /!!/,                              /!!/)
+      P_BLUE        = Pattern.new("P_BLUE",        /''/,                              /''/)
+      P_STRONG      = Pattern.new("P_STRONG",      /'''/,                             /'''/)
 
       #### Grammar ####
       #### ROOT must exist and holds the main first level patterns ####
@@ -33,11 +34,13 @@ module Chimp
 
       def mP_INCLUDE(ts,ti,te)
         @tree.last.data = {:name => [], :parameter => ''}
-        @tree.last.data['name'] = ts[1..-1].split(',')
+        @tree.last.data['name'] = ts[2..-1].split(',')
         @tree.last.data['parameter'] = ti.strip
         ""
       end
-
+      def mP_RANGE(ts,ti,te)
+        mP_INCLUDE(ts,ti,te)
+      end
       def mP_WHAT(ts,ti,te)
         @tree.last.data = ti
         ""
