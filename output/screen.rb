@@ -1,4 +1,4 @@
-require 'ncurses'
+require 'curses'
 
 module Chimp
   class Parser
@@ -14,31 +14,29 @@ module Chimp
         @what = ''
         @last = 0
         @skip = -1
-        Ncurses::initscr
-        if Ncurses::has_colors?
-          bg = Ncurses::COLOR_BLACK 
-          Ncurses::start_color 
-          if Ncurses::respond_to?("use_default_colors")
-            if Ncurses::use_default_colors == Ncurses::OK
+        Curses::init_screen
+        if Curses::has_colors?
+          bg = Curses::COLOR_BLACK 
+          Curses::start_color 
+          if Curses::respond_to?("use_default_colors")
+            if Curses::use_default_colors
               bg = -1 
             end 
           end
-          Ncurses::init_pair(1, Ncurses::COLOR_RED, bg);
-          Ncurses::init_pair(2, Ncurses::COLOR_BLUE, bg);
+          Curses::init_pair(1, Curses::COLOR_RED, bg)
+          Curses::init_pair(2, Curses::COLOR_BLUE, bg)
         end
-        Ncurses::cbreak
-        Ncurses::noecho
-        Ncurses::nonl
-        Ncurses::curs_set(0)
-        @win = Ncurses::stdscr
-        @win::intrflush(false)
-        Ncurses.keypad(@win, true)
+        Curses::cbreak
+        Curses::noecho
+        Curses::nonl
+        Curses::curs_set 0
+        @win = Curses::stdscr
         #}}}
       end
 
       def finish_output
-        Ncurses::curs_set(1)
-        Ncurses::endwin
+        Curses::curs_set 1
+        Curses::close_screen
       end
       
       def mPP_WHAT(data)
@@ -83,9 +81,9 @@ module Chimp
             @win.mvaddstr(lines-1,0, "Press ENTER to finish making a cheap impression." + (" "*columns)) 
           end
           ch = @win::getch
-        end while @last == i && ![Ncurses::KEY_LEFT, Ncurses::KEY_RESIZE, Ncurses::KEY_REFRESH, Ncurses::KEY_RESET, 114, 13].include?(ch)
+        end while @last == i && ![Curses::KEY_LEFT, Curses::KEY_RESIZE, Curses::KEY_REFRESH, Curses::KEY_RESET, 114, 13].include?(ch)
         case ch
-          when Ncurses::KEY_LEFT:
+          when Curses::KEY_LEFT
             #{{{
             pos = c.open-1
             tag = tree[pos]
@@ -113,7 +111,7 @@ module Chimp
               raise TagMoveEvent, pos
             end
             #}}}
-          when Ncurses::KEY_RESIZE, Ncurses::KEY_REFRESH, Ncurses::KEY_RESET, 114:
+          when Curses::KEY_RESIZE, Curses::KEY_REFRESH, Curses::KEY_RESET, 114
             #{{{
             (c.open-1).downto(0) do |b|
               if tree[b].class == OpenTag && tree[b].ttype == "P_SLIDES"
@@ -136,17 +134,17 @@ module Chimp
       def mCP_RED; set_color(0); end
       def mOP_BLUE; set_color(2); end
       def mCP_BLUE; set_color(0); end
-      def mOP_STRONG; @win::attron(Ncurses::A_BOLD); end
-      def mCP_STRONG; @win::attroff(Ncurses::A_BOLD); end
+      def mOP_STRONG; @win::attron(Curses::A_BOLD); end
+      def mCP_STRONG; @win::attroff(Curses::A_BOLD); end
 
       def string(data); @win::addstr data; end
 
       def set_color(color_pair)
         #{{{
-        if Ncurses::respond_to?(:color_set)
+        if Curses::respond_to?(:color_set)
           @win::color_set(color_pair, nil)
         else
-          @win::attrset(Ncurses::COLOR_PAIR(color_pair))
+          @win::attrset(Curses::COLOR_PAIR(color_pair))
         end
         #}}}
       end

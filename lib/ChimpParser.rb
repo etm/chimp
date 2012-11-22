@@ -1,5 +1,4 @@
 require 'strscan'
-$KCODE='UTF8'
 
 module Chimp
   class Parser
@@ -93,10 +92,10 @@ module Chimp
                 output.method("mC" + c.ttype)
             end
             out << case met.arity
-              when 0: met.call
-              when 1: met.call(data) 
-              when 2: met.call(c,@tree) 
-              when 3: met.call(c,@tree,i)
+              when 0; met.call
+              when 1; met.call(data) 
+              when 2; met.call(c,@tree) 
+              when 3; met.call(c,@tree,i)
               else
                 ""
             end.to_s
@@ -116,8 +115,8 @@ module Chimp
               unless @tree.length > i
                 met = output.method("finish_output")
                 out << case met.arity
-                  when 0: met.call
-                  when 1: met.call(@tree) 
+                  when 0; met.call
+                  when 1; met.call(@tree) 
                   else
                     ""
                 end.to_s
@@ -136,10 +135,10 @@ module Chimp
             if c.class == OpenTag
               met = output.method("mP" + c.ttype)
               case met.arity
-                when 0: met.call
-                when 1: met.call(c.data) 
-                when 2: met.call(c,@tree) 
-                when 3: met.call(c,@tree,i)
+                when 0; met.call
+                when 1; met.call(c.data) 
+                when 2; met.call(c,@tree) 
+                when 3; met.call(c,@tree,i)
               end  
             end
           rescue NameError
