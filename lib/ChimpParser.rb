@@ -1,4 +1,5 @@
 require 'strscan'
+require 'pp'
 
 module Chimp
   class Parser
@@ -61,7 +62,7 @@ module Chimp
       end
 
       def parse(text)
-        gparse(text,self.class::constants.include?("ROOT") ? self.class::ROOT : [])
+        gparse(text,self.class::constants.include?(:ROOT) ? self.class::ROOT : [])
         self
       end
 
@@ -159,7 +160,7 @@ module Chimp
           grammar.each do |pat|
             if s.match?(pat.pstart)
               pos = s.pos
-              bol = (pos == 0) ? true : s.string[pos-1] == 10
+              bol = (pos == 0) ? true : s.string[pos-1] == "\n"
               ts  = s.scan(pat.pstart)
               te = if s.eos?
                 "" =~ pat.pend ? "" : nil
@@ -187,14 +188,14 @@ module Chimp
                   success = true
                   next
                 end
-                gparse(inner,self.class::constants.include?("G" + pat.ptype) ? self.class::const_get("G" + pat.ptype) : [],position_in_markup+pos+ts.length,level+1)
+                gparse(inner,self.class::constants.include?(("G" + pat.ptype).to_sym) ? self.class::const_get(("G" + pat.ptype).to_sym) : [],position_in_markup+pos+ts.length,level+1)
                 @tree << CloseTag.new(pat.ptype,tpos,position_in_markup+s.pos,level)
                 ot.close = @tree.length-1
                 success = true
                 break
               end  
             end  
-          end  
+          end
           unless success
             if @tree.last.class == String
               @tree.last << s.getch
