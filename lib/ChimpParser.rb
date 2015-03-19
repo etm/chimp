@@ -1,4 +1,5 @@
 require 'strscan'
+require 'pp'
 
 module Chimp
   class Parser
@@ -187,14 +188,14 @@ module Chimp
                   success = true
                   next
                 end
-                gparse(inner,self.class::constants.include?(:"G#{pat.ptype}") ? self.class::const_get(:"G#{pat.ptype}") : [],position_in_markup+pos+ts.length,level+1)
+                gparse(inner,self.class::constants.include?(("G" + pat.ptype).to_sym) ? self.class::const_get(("G" + pat.ptype).to_sym) : [],position_in_markup+pos+ts.length,level+1)
                 @tree << CloseTag.new(pat.ptype,tpos,position_in_markup+s.pos,level)
                 ot.close = @tree.length-1
                 success = true
                 break
               end  
             end  
-          end  
+          end
           unless success
             if @tree.last.class == String
               @tree.last << s.getch
