@@ -25,7 +25,8 @@ module Chimp
 
       ROOT           = [ P_WHAT, P_SLIDES ]
       GP_SLIDES      = [ P_INCREMENTAL ]
-      GP_INCREMENTAL = [ P_INCLUDE, P_STRONG, P_RED, P_BLUE]
+      GP_INCREMENTAL = [ P_RANGE, P_INCLUDE, P_STRONG, P_RED, P_BLUE ]
+      GP_RANGE       = [ P_STRONG, P_RED, P_BLUE ]
       GP_RED         = [ P_STRONG ]
       GP_BLUE        = [ P_STRONG ]
       GP_STRONG      = [ P_RED, P_BLUE]
@@ -33,13 +34,17 @@ module Chimp
       ### Optional functions called when a pattern occurs (m + patternname) ####
 
       def mP_INCLUDE(ts,ti,te)
-        @tree.last.data = {:name => [], :parameter => ''}
-        @tree.last.data['name'] = ts[2..-1].split(',')
-        @tree.last.data['parameter'] = ti.strip
+        @tree.last.data = {}
+        @tree.last.data[:name] = ts[2..-1].split(',')[0]
+        @tree.last.data[:parameters] = ts[2..-1].split(',')[1..-1]
         ""
       end
       def mP_RANGE(ts,ti,te)
-        mP_INCLUDE(ts,ti,te)
+        @tree.last.data = {}
+        @tree.last.data[:name] = ts[2..-1].split(',')[0]
+        @tree.last.data[:parameters] = ts[2..-1].split(',')[1..-1]
+        @tree.last.data[:what] = ti.lstrip
+        ""
       end
       def mP_WHAT(ts,ti,te)
         @tree.last.data = ti

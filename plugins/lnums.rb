@@ -1,12 +1,12 @@
 module Chimp
   module Plugin
     class LNUMS < Base
-      def process(parameter)
+      def process(parameters)
         i = 0
-        parameter.strip.each_line.map do |l|
+        @what.each_line.map do |l|
           i += 1
           ("%02i: " % i) + l
-        end
+        end.join('')
       end
     end
   end  

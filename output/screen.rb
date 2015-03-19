@@ -53,13 +53,16 @@ module Chimp
       def mOP_SLIDES(c,tree)
         #{{{
         @win::clear
-        lines = @win.getmaxy
-        columns = @win.getmaxx
-        @win.mvaddstr(lines-2,0, "-"*columns) 
-        @win.mvaddstr(lines-1,0, @what) 
+        lines = @win.maxy
+        columns = @win.maxx
+        @win.setpos lines-2, 0
+        @win.addstr "-"*columns 
+        @win.setpos lines-1, 0
+        @win.addstr @what 
         num = "#{c.userdata}/#{@scounter}"
-        @win.mvaddstr(lines-1,columns-num.length, num) 
-        @win.mvaddstr(0,0,'')
+        @win.setpos lines-1, columns-num.length
+        @win.addstr num 
+        @win.setpos 0, 0
         #}}}
       end
 
@@ -67,18 +70,18 @@ module Chimp
         @last = c.close
       end
       def mOP_INCREMENTAL(c,tree)
-        x = []; y = []
-        @win.getyx(y,x)
-        c.userdata = { :x => x[0], :y => y[0] }
+        x = @win.curx; y= @win.cury
+        c.userdata = { :x => x, :y => y }
       end
       def mCP_INCREMENTAL(c,tree,i)
         return if @skip > i
         @skip = -1
         begin
           if @last == i
-            lines = @win.getmaxy
-            columns = @win.getmaxx
-            @win.mvaddstr(lines-1,0, "Press ENTER to finish making a cheap impression." + (" "*columns)) 
+            lines = @win.maxy
+            columns = @win.maxx
+            @win.setpos lines-1, 0
+            @win.addstr "Press ENTER to finish making a cheap impression." + (" "*columns)
           end
           ch = @win::getch
         end while @last == i && ![Curses::KEY_LEFT, Curses::KEY_RESIZE, Curses::KEY_REFRESH, Curses::KEY_RESET, 114, 13].include?(ch)
@@ -97,16 +100,14 @@ module Chimp
             if tag.ttype == "P_INCREMENTAL"
               pos = tag.open
               tag = tree[pos]
-              columns = @win.getmaxx
+              columns = @win.maxx
               #### get current position
-              x = []; y = []
-              @win.getyx(y,x)
-              x = x[0]
-              y = y[0]
+              x = @win.curx; y= @win.cury
               #### how many spaces needed
               howmuch = ((y - tag.userdata[:y] + 1) * columns) - (columns - x) - tag.userdata[:x]
-              @win.mvaddstr(tag.userdata[:y],tag.userdata[:x],' '*howmuch) 
-              @win.mvaddstr(tag.userdata[:y],tag.userdata[:x],'')
+              @win.setpos tag.userdata[:y], tag.userdata[:x]
+              @win.addstr ' ' * howmuch
+              @win.setpos tag.userdata[:y], tag.userdata[:x]
               ####
               raise TagMoveEvent, pos
             end
@@ -123,11 +124,8 @@ module Chimp
         end  
       end
       def mOP_RANGE(data)
-        data.name.each do |n|
-          require "plugins/#{n}"
-          plug = eval(n.upcase).new
-
-        end
+        require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
+        @win::addstr eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
       end
 
       def mOP_RED; set_color(1); end
@@ -152,12 +150,13 @@ module Chimp
 
       def p(what)
         #{{{
-        lines = @win.getmaxy
-        @win.mvaddstr lines-1,0,what.inspect
-        x = []; y = []
-        @win.getyx(y,x)
-        @win.mvaddstr y,x,''
-        #}}}
+        lines = @win.maxy
+        @win.setpos lines-1, 0
+        @win.addstr what.inspect
+        x = @win.curx; y= @win.cury
+        @win.setpos y, x
+        @win.getch
+        #}}} 
       end
       private :p
 

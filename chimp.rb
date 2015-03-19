@@ -27,6 +27,7 @@ end
 #}}}
 
 grammy = Chimp::Parser::SimpleGrammar.parse File::read(ARGV[0])
+pp grammy.tree
 screen = Chimp::Parser::Screen.new
 grammy.prepare(screen)
 grammy.output(screen)
