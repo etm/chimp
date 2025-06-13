@@ -10,6 +10,8 @@ CHIMP - Cheap Impression Presenter
 
 Make a cheap impression. Present via terminal.
 
+```gem install chimp``` 
+
 It has a simple syntax:
 
     #what: the title of presentation
@@ -37,6 +39,8 @@ Line
 
 During presenting you can use the usual button for navigating. In addition, you
 can use ``q`` to quit the presentation, and ``r`` to refresh the screen.
+
+Check out the examples.
 
 History & Thanks
 ================
