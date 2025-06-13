@@ -3,7 +3,7 @@
 Jürgen Mangler
 mailto: juergen.mangler@gmail.com
 
-'''!!C H I M P!!'''
+%%figlet C H I M P
 
 Make a cheap impression. Present via terminal.
 ---
@@ -15,7 +15,7 @@ a = 3
 b = 7
 1.upto(b) do |l|
   bla
-end  
+end
 %%
 +++
 * Finally

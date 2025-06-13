@@ -9,11 +9,11 @@ module Chimp
       #### Name of pattern has to be the first parameter to pattern ####
       #### According to the names the methods are selected ####
 
-      P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n([\t ]*\n)*)|\A/,    /^(?=---+)|\z/, true)
-      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                   /[\t ]*(\n|\z)/,true)
-      P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n([\t ]*\n)*)|\A/, /^(?=\+\+\++)|\z/, true)
-      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^%%([a-z]+,)*[a-z]+/,             /(\n|\z)/,true)
-      P_RANGE       = Pattern.new("P_RANGE",       /^%%([a-z]+,)*[a-z]+/,             /^%%[\t ]*(\n|\z)/,true)
+      P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n([\t ]*\n)*)|\A/,    /^(?=---+)|\z/)
+      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                   /[\t ]*(\n|\z)/)
+      P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n([\t ]*\n)*)|\A/, /^(?=\+\+\++)|\z/)
+      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^%%([a-z]+,)*[a-z]+[\t ]+/,       /[\t ]*(\n|\z)/)
+      P_RANGE       = Pattern.new("P_RANGE",       /^%%([a-z]+,)*[a-z]+/,             /^%%[\t ]*(\n|\z)/)
       P_RED         = Pattern.new("P_RED",         /!!/,                              /!!/)
       P_BLUE        = Pattern.new("P_BLUE",        /''/,                              /''/)
       P_STRONG      = Pattern.new("P_STRONG",      /'''/,                             /'''/)
@@ -32,23 +32,23 @@ module Chimp
       GP_STRONG      = [ P_RED, P_BLUE]
 
       ### Optional functions called when a pattern occurs (m + patternname) ####
-
       def mP_INCLUDE(ts,ti,te)
         @tree.last.data = {}
-        @tree.last.data[:name] = ts[2..-1].split(',')[0]
-        @tree.last.data[:parameters] = ts[2..-1].split(',')[1..-1]
-        ""
+        @tree.last.data[:name] = ts[2..-1].split(',')[0].strip
+        @tree.last.data[:parameters] = ts[2..-1].split(',')[1]&.strip
+        @tree.last.data[:what] = ti.lstrip
+        ''
       end
       def mP_RANGE(ts,ti,te)
         @tree.last.data = {}
-        @tree.last.data[:name] = ts[2..-1].split(',')[0]
-        @tree.last.data[:parameters] = ts[2..-1].split(',')[1..-1]
+        @tree.last.data[:name] = ts[2..-1].strip.split(',')[0].strip
+        @tree.last.data[:parameters] = ts[2..-1].split(',')[1]&.strip
         @tree.last.data[:what] = ti.lstrip
-        ""
+        ''
       end
       def mP_WHAT(ts,ti,te)
         @tree.last.data = ti
-        ""
+        ''
       end
     end
 

@@ -13,7 +13,7 @@ module Chimp
         @userdata = nil
         @level = level
       end
-    end  
+    end
     class CloseTag
       attr_reader :ttype, :open, :position_in_markup, :level
       def initialize(ttype,open,position_in_markup,level)
@@ -23,12 +23,12 @@ module Chimp
         @level = level
       end
     end
-      
+
     class TagEvent < Exception; end
     class TagSkipEvent < Exception; end
     class TagMoveEvent < Exception; end
     class TagContentSkipEvent < Exception; end
-    
+
     class Output
       def finish_prepare
       end
@@ -38,7 +38,7 @@ module Chimp
       def string(data)
         data
       end
-    end 
+    end
 
     class Grammar
       attr_reader :tree # a list which pretends to be a tree :-)
@@ -56,7 +56,7 @@ module Chimp
       def initialize
         @tree = []
       end
-      
+
       def Grammar.parse(text)
         new.parse(text)
       end
@@ -74,8 +74,8 @@ module Chimp
           indent << "  " if c.class == OpenTag
         end
         out
-      end  
-      
+      end
+
       def output(output)
         out = ''; i = 0
         while @tree.length > i
@@ -94,15 +94,14 @@ module Chimp
             end
             out << case met.arity
               when 0; met.call
-              when 1; met.call(data) 
-              when 2; met.call(c,@tree) 
+              when 1; met.call(data)
+              when 2; met.call(c,@tree)
               when 3; met.call(c,@tree,i)
               else
                 ""
             end.to_s
 
             i += 1
-
           rescue NameError
             i += 1
           rescue TagSkipEvent
@@ -111,25 +110,25 @@ module Chimp
             i = c.close if c.class == OpenTag
           rescue TagMoveEvent => e
             i = e.message.to_i
-          ensure  
+          ensure
             begin
               unless @tree.length > i
                 met = output.method("finish_output")
                 out << case met.arity
                   when 0; met.call
-                  when 1; met.call(@tree) 
+                  when 1; met.call(@tree)
                   else
                     ""
                 end.to_s
-              end  
+              end
             rescue TagMoveEvent => e
               i = e.message.to_i
-            end  
+            end
           end
-        end 
+        end
         out
-      end 
-      
+      end
+
       def prepare(output)
         @tree.each_with_index do |c,i|
           begin
@@ -137,20 +136,20 @@ module Chimp
               met = output.method("mP" + c.ttype)
               case met.arity
                 when 0; met.call
-                when 1; met.call(c.data) 
-                when 2; met.call(c,@tree) 
+                when 1; met.call(c.data)
+                when 2; met.call(c,@tree)
                 when 3; met.call(c,@tree,i)
-              end  
+              end
             end
           rescue NameError
           rescue TagSkipEvent
           rescue TagContentSkipEvent
           rescue TagMoveEvent
           end
-        end 
+        end
         output.method("finish_prepare").call
-        self 
-      end  
+        self
+      end
 
       def gparse(text,grammar,position_in_markup=0,level=0)
         return if text.nil?
@@ -183,7 +182,7 @@ module Chimp
                   @tree.pop
                   s.pos = pos
                   next
-                rescue TagSkipEvent  
+                rescue TagSkipEvent
                   @tree.pop
                   success = true
                   next
@@ -193,21 +192,21 @@ module Chimp
                 ot.close = @tree.length-1
                 success = true
                 break
-              end  
-            end  
+              end
+            end
           end
           unless success
             if @tree.last.class == String
               @tree.last << s.getch
-            else  
+            else
               @tree << s.getch
-            end  
+            end
           end
-        end  
+        end
       end
 
       private :gparse
-    end  
+    end
 
-  end  
+  end
 end

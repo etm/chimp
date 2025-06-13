@@ -7,7 +7,7 @@ module Chimp
       #### Optional functions called when a tree is tranformed to output ####
       #### mO + patternname for opening tags ####
       #### mC + patternname for closing tags ####
-      
+
       def initialize()
         #{{{
         @scounter = @ccounter = 0
@@ -16,12 +16,12 @@ module Chimp
         @skip = -1
         Curses::init_screen
         if Curses::has_colors?
-          bg = Curses::COLOR_BLACK 
-          Curses::start_color 
+          bg = Curses::COLOR_BLACK
+          Curses::start_color
           if Curses::respond_to?("use_default_colors")
             if Curses::use_default_colors
-              bg = -1 
-            end 
+              bg = -1
+            end
           end
           Curses::init_pair(1, Curses::COLOR_RED, bg)
           Curses::init_pair(2, Curses::COLOR_BLUE, bg)
@@ -38,11 +38,11 @@ module Chimp
         Curses::curs_set 1
         Curses::close_screen
       end
-      
+
       def mPP_WHAT(data)
         @what = data
       end
-      
+
       def mPP_SLIDES(c,tree)
         #{{{
         @scounter += 1
@@ -56,12 +56,12 @@ module Chimp
         lines = @win.maxy
         columns = @win.maxx
         @win.setpos lines-2, 0
-        @win.addstr "-"*columns 
+        @win.addstr "-"*columns
         @win.setpos lines-1, 0
-        @win.addstr @what 
+        @win.addstr @what
         num = "#{c.userdata}/#{@scounter}"
         @win.setpos lines-1, columns-num.length
-        @win.addstr num 
+        @win.addstr num
         @win.setpos 0, 0
         #}}}
       end
@@ -118,10 +118,14 @@ module Chimp
               if tree[b].class == OpenTag && tree[b].ttype == "P_SLIDES"
                 @skip = i
                 raise TagMoveEvent, b
-              end  
+              end
             end
             #}}}
-        end  
+        end
+      end
+      def mOP_INCLUDE(data)
+        require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
+        @win::addstr eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
       end
       def mOP_RANGE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
@@ -156,7 +160,7 @@ module Chimp
         x = @win.curx; y= @win.cury
         @win.setpos y, x
         @win.getch
-        #}}} 
+        #}}}
       end
       private :p
 

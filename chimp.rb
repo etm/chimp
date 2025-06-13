@@ -1,16 +1,14 @@
-#!/usr/bin/ruby 
+#!/usr/bin/ruby
 #{{{
 curpath = __FILE__
 while ::File::symlink?(curpath)
   curpath = ::File::dirname(curpath) + '/' + ::File::readlink(curpath)
-end  
+end
 require 'optparse'
-require 'pp'
-require 'rubygems'
-require ::File::dirname(curpath) + "/lib/ChimpParser"
-require ::File::dirname(curpath) + "/lib/ChimpPlugin"
-require ::File::dirname(curpath) + "/lib/ChimpParser-Grammar"
-require ::File::dirname(curpath) + "/output/screen"
+require_relative 'lib/ChimpParser'
+require_relative 'lib/ChimpPlugin'
+require_relative 'lib/ChimpParser-Grammar'
+require_relative 'output/screen'
 
 ARGV.options { |opt|
   opt.summary_indent = ' ' * 2
@@ -20,7 +18,7 @@ ARGV.options { |opt|
   opt.on("Filename needs to be a chimp presentation.")
   opt.parse!
 }
-if ARGV.length == 0 || !File.exists?(ARGV[0])
+if ARGV.length == 0 || !File.exist?(ARGV[0])
   puts ARGV.options
   exit
 end
