@@ -33,6 +33,7 @@ Line
 Line
 Line
 %%
+```
 
 During presenting you can use the usual button for navigating. In addition, you
 can use ``q`` to quit the presentation, and ``r`` to refresh the screen.
