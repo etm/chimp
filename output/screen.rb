@@ -3,12 +3,13 @@ require 'tty-screen'
 require 'io/console'
 
 module Window #{{{
+  class WinchError < Exception; end
   def self::init()
     self::clear
     $stdout << "\e[?25l"
     $stdout.flush
     Signal.trap("WINCH") do
-      @stdin.write 'r'
+      raise WinchError, 'nope'
     end
     nil
   end
@@ -63,12 +64,14 @@ module Window #{{{
     $stdin.raw do |stdin|
       $stdout << "\e[6n"
       $stdout.flush
-      while (c = stdin.getc) != 'R'
+      while (c = $stdin.getc) != 'R'
         res << c if c
       end
     end
     m = res.match /(?<column>\d+);(?<row>\d+)/
     [ Integer(m[:row]), Integer(m[:column]) ]
+  rescue WinchErrror
+   [0,0]
   end
 end #}}}
 
@@ -142,7 +145,11 @@ module Chimp
             @screen.set_pos 0, lines
             @screen.print "Press ENTER to finish making a cheap impression."
           end
+          begin
           ch = @screen.getch
+          rescue Window::WinchError
+            ch = :refresh
+          end
         end while @last == i && ![:previous, :exit, :enter, :refresh].include?(ch)
         case ch
           when :previous
