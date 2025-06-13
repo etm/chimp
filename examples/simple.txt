@@ -3,7 +3,7 @@
 Jürgen Mangler
 mailto: juergen.mangler@gmail.com
 
-%%figlet C H I M P
+%%figlet CHIMP
 
 Make a cheap impression. Present via terminal.
 ---
@@ -19,3 +19,5 @@ end
 %%
 +++
 * Finally
+---
+ssss

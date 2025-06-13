@@ -1,4 +1,76 @@
-require 'curses'
+require 'pastel'
+require 'tty-screen'
+require 'io/console'
+
+module Window #{{{
+  def self::init()
+    self::clear
+    $stdout << "\e[?25l"
+    $stdout.flush
+    Signal.trap("WINCH") do
+      @stdin.write 'r'
+    end
+    nil
+  end
+  def self::finish()
+    self::clear
+    self::set_pos 0, 0
+    $stdout << "\e[?25h"
+    $stdout.flush
+    nil
+  end
+  def self::getch()
+    loop do
+      case $stdin.getch
+        when 'r' then return :refresh
+        when 'q' then return :exit
+        when "\r" then return :enter
+        when "\e"
+          case $stdin.getch
+          when '['
+            case $stdin.getch
+              when 'A' then return :previous
+              when 'B' then return :next
+              when 'C' then return :next
+              when 'D' then return :previous
+            end
+          end
+      end
+    end
+  end
+  def self::lines()
+    TTY::Screen.lines
+  end
+  def self::columns()
+    TTY::Screen.columns
+  end
+  def self::clear()
+    $stdout << "\e[2J"
+    $stdout.flush
+    self
+  end
+  def self::set_pos(x,y)
+    $stdout << "\e[#{y};#{x}H"
+    $stdout.flush
+    self
+  end
+  def self::print(a)
+    $stdout.write a
+    $stdout.flush
+  end
+  def self::get_pos
+    res = ''
+    $stdin.raw do |stdin|
+      $stdout << "\e[6n"
+      $stdout.flush
+      while (c = stdin.getc) != 'R'
+        res << c if c
+      end
+    end
+    m = res.match /(?<column>\d+);(?<row>\d+)/
+    [ Integer(m[:row]), Integer(m[:column]) ]
+  end
+end #}}}
 
 module Chimp
   class Parser
@@ -8,36 +80,23 @@ module Chimp
       #### mO + patternname for opening tags ####
       #### mC + patternname for closing tags ####
 
-      def initialize()
-        #{{{
+      def initialize() #{{{
         @scounter = @ccounter = 0
         @what = ''
         @last = 0
         @skip = -1
-        Curses::init_screen
-        if Curses::has_colors?
-          bg = Curses::COLOR_BLACK
-          Curses::start_color
-          if Curses::respond_to?("use_default_colors")
-            if Curses::use_default_colors
-              bg = -1
-            end
-          end
-          Curses::init_pair(1, Curses::COLOR_RED, bg)
-          Curses::init_pair(2, Curses::COLOR_BLUE, bg)
-        end
-        Curses::cbreak
-        Curses::noecho
-        Curses::nonl
-        Curses::curs_set 0
-        @win = Curses::stdscr
-        #}}}
-      end
 
-      def finish_output
-        Curses::curs_set 1
-        Curses::close_screen
-      end
+        @format = Pastel.new
+        @screen = Window
+
+        @screen.init
+      end #}}}
+
+      def finish_output #{{{
+        @screen.set_pos 0,  @screen.lines
+        @screen.print ' ' * (@screen.columns - 5)
+        @screen.set_pos 0, @screen.lines
+      end #}}}
 
       def mPP_WHAT(data)
         @what = data
@@ -52,17 +111,17 @@ module Chimp
       end
       def mOP_SLIDES(c,tree)
         #{{{
-        @win::clear
-        lines = @win.maxy
-        columns = @win.maxx
-        @win.setpos lines-2, 0
-        @win.addstr "-"*columns
-        @win.setpos lines-1, 0
-        @win.addstr @what
+        @screen.clear
+        lines = @screen.lines
+        columns = @screen.columns
+        @screen.set_pos 0, lines-1
+        @screen.print "-"*columns
+        @screen.set_pos 0, lines
+        @screen.print @what
         num = "#{c.userdata}/#{@scounter}"
-        @win.setpos lines-1, columns-num.length
-        @win.addstr num
-        @win.setpos 0, 0
+        @screen.set_pos columns-num.length, lines
+        @screen.print num
+        @screen.set_pos 0, 0
         #}}}
       end
 
@@ -70,7 +129,7 @@ module Chimp
         @last = c.close
       end
       def mOP_INCREMENTAL(c,tree)
-        x = @win.curx; y= @win.cury
+        x, y = @screen.get_pos
         c.userdata = { :x => x, :y => y }
       end
       def mCP_INCREMENTAL(c,tree,i)
@@ -78,15 +137,15 @@ module Chimp
         @skip = -1
         begin
           if @last == i
-            lines = @win.maxy
-            columns = @win.maxx
-            @win.setpos lines-1, 0
-            @win.addstr "Press ENTER to finish making a cheap impression." + (" "*columns)
+            lines = @screen.lines
+            columns = @screen.columns
+            @screen.set_pos 0, lines
+            @screen.print "Press ENTER to finish making a cheap impression."
           end
-          ch = @win::getch
-        end while @last == i && ![Curses::KEY_LEFT, Curses::KEY_RESIZE, Curses::KEY_REFRESH, Curses::KEY_RESET, 114, 13].include?(ch)
+          ch = @screen.getch
+        end while @last == i && ![:previous, :exit, :enter, :refresh].include?(ch)
         case ch
-          when Curses::KEY_LEFT
+          when :previous
             #{{{
             pos = c.open-1
             tag = tree[pos]
@@ -100,19 +159,20 @@ module Chimp
             if tag.ttype == "P_INCREMENTAL"
               pos = tag.open
               tag = tree[pos]
-              columns = @win.maxx
+              columns = @screen.columns
               #### get current position
-              x = @win.curx; y= @win.cury
+              x, y = @screen.get_pos
               #### how many spaces needed
               howmuch = ((y - tag.userdata[:y] + 1) * columns) - (columns - x) - tag.userdata[:x]
-              @win.setpos tag.userdata[:y], tag.userdata[:x]
-              @win.addstr ' ' * howmuch
-              @win.setpos tag.userdata[:y], tag.userdata[:x]
+              @screen.set_pos tag.userdata[:x], tag.userdata[:y]
+              @screen.print x.to_s + ',' + y.to_s
+              @screen.print ' ' * howmuch
+              @screen.set_pos tag.userdata[:x], tag.userdata[:y]
               ####
               raise TagMoveEvent, pos
             end
             #}}}
-          when Curses::KEY_RESIZE, Curses::KEY_REFRESH, Curses::KEY_RESET, 114
+          when :refresh
             #{{{
             (c.open-1).downto(0) do |b|
               if tree[b].class == OpenTag && tree[b].ttype == "P_SLIDES"
@@ -121,45 +181,30 @@ module Chimp
               end
             end
             #}}}
+          when :exit
+            @screen.finish
+            exit
         end
       end
       def mOP_INCLUDE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @win::addstr eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
+        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters],data[:additional])
       end
       def mOP_RANGE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @win::addstr eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
+        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
       end
 
-      def mOP_RED; set_color(1); end
-      def mCP_RED; set_color(0); end
-      def mOP_BLUE; set_color(2); end
-      def mCP_BLUE; set_color(0); end
-      def mOP_STRONG; @win::attron(Curses::A_BOLD); end
-      def mCP_STRONG; @win::attroff(Curses::A_BOLD); end
-
-      def string(data); @win::addstr data; end
-
-      def set_color(color_pair)
-        #{{{
-        if Curses::respond_to?(:color_set)
-          @win::color_set(color_pair, nil)
-        else
-          @win::attrset(Curses::COLOR_PAIR(color_pair))
-        end
-        #}}}
-      end
-      private :set_color
+      def string(c,i,tree,data); @screen.print(data) end
 
       def p(what)
         #{{{
-        lines = @win.maxy
-        @win.setpos lines-1, 0
-        @win.addstr what.inspect
-        x = @win.curx; y= @win.cury
-        @win.setpos y, x
-        @win.getch
+        lines = @screen.lines
+        @screen.set_pos 0, lines-1
+        @screen.print what.inspect
+        x, y = @screen.get_pos
+        @screen.set_pos x, y
+        @screen.getch
         #}}}
       end
       private :p

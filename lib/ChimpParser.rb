@@ -55,13 +55,15 @@ module Chimp
 
       def initialize
         @tree = []
+        @parameters = {}
       end
 
-      def Grammar.parse(text)
-        new.parse(text)
+      def Grammar.parse(text,params = {})
+        new.parse(text,params)
       end
 
-      def parse(text)
+      def parse(text,params = {})
+        @parameters = params
         gparse(text,self.class::constants.include?(:ROOT) ? self.class::ROOT : [])
         self
       end
@@ -97,12 +99,13 @@ module Chimp
               when 1; met.call(data)
               when 2; met.call(c,@tree)
               when 3; met.call(c,@tree,i)
+              when 4; met.call(c,@tree,i,data)
               else
                 ""
             end.to_s
 
             i += 1
-          rescue NameError
+          rescue NameError => e
             i += 1
           rescue TagSkipEvent
             i = c.close + 1 if c.class == OpenTag

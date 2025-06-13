@@ -12,4 +12,6 @@ mailto: juergen.mangler@gmail.com
 
 ''aaaa''
 
-%%figlet TUM
+%%sixel test.png
+
+rrr

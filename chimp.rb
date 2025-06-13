@@ -24,7 +24,7 @@ if ARGV.length == 0 || !File.exist?(ARGV[0])
 end
 #}}}
 
-grammy = Chimp::Parser::SimpleGrammar.parse File::read(ARGV[0])
+grammy = Chimp::Parser::SimpleGrammar.parse File::read(ARGV[0]), :fname => File.realpath(ARGV[0])
 screen = Chimp::Parser::Screen.new
-grammy.prepare(screen)
-grammy.output(screen)
+grammy.prepare screen
+grammy.output screen

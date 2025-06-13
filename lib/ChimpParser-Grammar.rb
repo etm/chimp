@@ -1,5 +1,4 @@
-require ::File.expand_path(::File.dirname(__FILE__) + "/ChimpParser")
-require 'base64'
+require_relative 'ChimpParser'
 
 module Chimp
   class Parser
@@ -36,6 +35,7 @@ module Chimp
         @tree.last.data = {}
         @tree.last.data[:name] = ts[2..-1].split(',')[0].strip
         @tree.last.data[:parameters] = ts[2..-1].split(',')[1]&.strip
+        @tree.last.data[:additional] = @parameters
         @tree.last.data[:what] = ti.lstrip
         ''
       end
