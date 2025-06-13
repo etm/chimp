@@ -5,7 +5,7 @@ CHIMP - Cheap Impression Presenter
       ___ / /___    / _ \ \ ___
      / __| |/ _ \  | | | | |__ \
     | (__| | (_) | | |_| | |__) |
-     \___| |\___!!(_|_)!!___/| |___/
+     \___| |\_!!(_|_)!!__| |___/
           \_\           /_/
 
 Make a cheap impression. Present via terminal.
