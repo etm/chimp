@@ -28,7 +28,7 @@ Everything else is in plugins. The following plugins are existing for now:
 
 * Sixel: display graphics in the terminal: ``%%sixel name.png``.
 * Figlet: display fancy ascii text: ``%%figlet FANCY_TEXT``.
-* Line Numerbers: display line numbers beforce any text.
+* Line Numbers: display line numbers beforce any text.
 ```text
 %%figlet
 Line
