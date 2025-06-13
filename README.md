@@ -1,4 +1,4 @@
-CHIMP - Cheap Impression Presenter
+CHIMP - Cheap IMpression Presenter
 ==================================
 
            __        _____
