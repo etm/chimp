@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
 
   s.description      = "see https://github.com/etm/chimp"
 
-  s.files            = Dir['{example/**/*,tools/**/*,lib/**/*,}'] + %w(LICENSE INSTALL.md Rakefile chimp.gemspec AUTHORS)
+  s.files            = Dir['{example/*.txt,tools/**/*,lib/**/*,}'] + %w(LICENSE INSTALL.md Rakefile chimp.gemspec AUTHORS)
   s.require_path     = 'lib'
   s.extra_rdoc_files = ['README.md','INSTALL.md']
   s.bindir           = 'tools'

@@ -143,14 +143,14 @@ module Chimp
             lines = @screen.lines
             columns = @screen.columns
             @screen.set_pos 0, lines
-            @screen.print "Press ENTER to finish making a cheap impression."
+            @screen.print "Press q to finish making a cheap impression."
           end
           begin
           ch = @screen.getch
           rescue Window::WinchError
             ch = :refresh
           end
-        end while @last == i && ![:previous, :exit, :enter, :refresh].include?(ch)
+        end while @last == i && ![:previous, :exit, :refresh].include?(ch)
         case ch
           when :previous
             #{{{
@@ -202,7 +202,9 @@ module Chimp
         @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
       end
 
-      def string(c,i,tree,data); @screen.print(data) end
+      def string(c,i,tree,data)
+        @screen.print(data)
+      end
 
       def p(what)
         #{{{

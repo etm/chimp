@@ -2,7 +2,8 @@ module Chimp
   module Plugin
     class FIGLET < Base
       def process(parameters,additional)
-        `figlet #{@what}`
+        x = `figlet #{@what}`
+        x
       end
     end
   end
