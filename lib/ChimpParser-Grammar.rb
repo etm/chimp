@@ -8,14 +8,14 @@ module Chimp
       #### Name of pattern has to be the first parameter to pattern ####
       #### According to the names the methods are selected ####
 
-      P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n([\t ]*\n)*)|\A/,    /^(?=---+)|\z/)
-      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                   /[\t ]*(\n|\z)/)
-      P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n([\t ]*\n)*)|\A/, /^(?=\+\+\++)|\z/)
-      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^%%([a-z]+,)*[a-z]+[\t ]+/,       /[\t ]*(\n|\z)/)
-      P_RANGE       = Pattern.new("P_RANGE",       /^%%([a-z]+,)*[a-z]+/,             /^%%[\t ]*(\n|\z)/)
-      P_RED         = Pattern.new("P_RED",         /!!/,                              /!!/)
-      P_BLUE        = Pattern.new("P_BLUE",        /''/,                              /''/)
-      P_STRONG      = Pattern.new("P_STRONG",      /'''/,                             /'''/)
+      P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n([\t ]*\n)*)|\A/,      /^(?=---+)|\z/)
+      P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                     /[\t ]*(\n|\z)/)
+      P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n([\t ]*\n)*)|\A/,   /^(?=\+\+\++)|\z/)
+      P_INCLUDE     = Pattern.new("P_INCLUDE",     /^%%([a-z0-9_]+,)*[a-z0-9_]+[\t ]+/, /[\t ]*(\n|\z)/)
+      P_RANGE       = Pattern.new("P_RANGE",       /^%%([a-z0-9_]+,)*[a-z0-9_]+[\t ]+/, /^%%[\t ]*(\n|\z)/)
+      P_RED         = Pattern.new("P_RED",         /!!/,                                /!!/)
+      P_BLUE        = Pattern.new("P_BLUE",        /''/,                                /''/)
+      P_STRONG      = Pattern.new("P_STRONG",      /'''/,                               /'''/)
 
       #### Grammar ####
       #### ROOT must exist and holds the main first level patterns ####

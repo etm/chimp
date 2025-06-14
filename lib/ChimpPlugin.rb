@@ -1,9 +1,7 @@
 module Chimp
   module Plugin
     class Base
-      def initialize(what)
-        @what = what
-      end
+      def initialize; end
     end
   end
-end  
+end

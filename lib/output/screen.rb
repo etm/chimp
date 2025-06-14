@@ -195,14 +195,14 @@ module Chimp
       end
       def mOP_INCLUDE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters],data[:additional])
+        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
       end
       def mOP_RANGE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new(data[:what]).process(data[:parameters])
+        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
       end
 
-      def string(c,i,tree,data)
+      def string(data)
         @screen.print(data)
       end
 
