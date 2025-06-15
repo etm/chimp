@@ -65,7 +65,7 @@ How does it look?
 History & Thanks
 ================
 
-Amy Hoy allowed me to use the monkey ascii art she created for the CHIMP all the way back in 2009. The
+Amy Hoy all the way back in 2009 allowed me to use her monkey ascii art for the CHIMP. The
 CHIMP was written as an icebreaker for the curucamp, which was a ruby
 un-conference in 2009 in Vienna. We had fun, and many cool people from the
 community attended.
