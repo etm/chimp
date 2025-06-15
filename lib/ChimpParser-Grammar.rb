@@ -13,6 +13,7 @@ module Chimp
       P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n)|\A/,               /^(?=\+\+\++)|\z/)
       P_RANGE       = Pattern.new("P_RANGE",       /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]*/, /^```[\t ]*(\n|\z)/)
       P_INCLUDE     = Pattern.new("P_INCLUDE",     /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]+/, /[\t ]*(\n|\z)/)
+      P_CENTER      = Pattern.new("P_CENTER ",     /^~~/,                                /[\t ]*(\n|\z)/)
       P_STRONG      = Pattern.new("P_STRONG",      /!!/,                                 /!!/)
       P_RED         = Pattern.new("P_RED",         /''/,                                 /''/)
       P_BLUE        = Pattern.new("P_BLUE",        /%%/,                                 /%%/)
@@ -26,8 +27,7 @@ module Chimp
 
       ROOT           = [ P_WHAT, P_SLIDES ]
       GP_SLIDES      = [ P_INCREMENTAL ]
-      GP_INCREMENTAL = [ P_RANGE, P_INCLUDE, P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
-      GP_RANGE       = [ P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
+      GP_INCREMENTAL = [ P_CENTER, P_RANGE, P_INCLUDE, P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
 
       ### Optional functions called when a pattern occurs (m + patternname) ####
       def mP_INCLUDE(ts,ti,te)
