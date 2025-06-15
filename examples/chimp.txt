@@ -3,7 +3,7 @@
 Jürgen Mangler
 mailto: juergen.mangler@gmail.com
 
-!!''C H I M P''!!
+!!''c h i m p''!!
        __        _____
   ___ / /___    / _ \ \ ___
  / __| |/ _ \  | | | | |__ \
@@ -11,7 +11,7 @@ mailto: juergen.mangler@gmail.com
  \___| |\___!!''(_|_)''!!___/| |___/
      \_\           /_/
 
-Make a cheap impression. Present via terminal.
+make a cheap impression. present via terminal.
 
 ---
 

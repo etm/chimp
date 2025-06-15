@@ -217,6 +217,16 @@ module Chimp
       def mOP_STRONGBLUE(data); @screen.print "\e[1;34m"; end
       def mCP_STRONGBLUE(data); @screen.print "\e[0m"; end
 
+      def mOP_CENTER(data)
+        len = @screen.columns
+        if len-data > 0
+          @screen.print ' ' * ((len - data) / 2)
+        end
+      end
+      def mCP_CENTER(data)
+        @screen.print "\n"
+      end
+
       def string(data)
         @screen.print(data)
       end
