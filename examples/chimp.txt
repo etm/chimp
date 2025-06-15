@@ -45,7 +45,9 @@ Example
 10: +++
 11: * Appears afterward
 12: * This one too
+
 ---
+
 The following code drives it:
 
 00: clear_code = %x{clear}
