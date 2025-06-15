@@ -11,6 +11,7 @@ Make a cheap impression. Present via terminal.
 
 * Bullet stuff
 * More Bullets
+
 +++
 ```lnums
 a = 3
@@ -19,9 +20,10 @@ b = 7
   bla
 end
 ```
+
 +++
 * Finally
 
 ---
 
-ssss
+Thanks.
