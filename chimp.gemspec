@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name             = "chimp"
-  s.version          = "0.99"
+  s.version          = "1.0.0"
   s.platform         = Gem::Platform::RUBY
   s.license          = "GPL-3.0-or-later"
   s.summary          = "CHIMP - Make a cheap impression. Present on the terminal"
