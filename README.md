@@ -30,13 +30,13 @@ Everything else is in plugins. The following plugins are existing for now:
 * Sixel: display graphics in the terminal: `` ```sixel,20 name.png``.
   * The parameter 20 denotes the size in characters.
   * You can add right or center as an additional parameter to align the picture.
-  * If the picture is right aligned text is added on the left of the picture instead of beneath.  
+  * If the picture is right aligned, text is added on the left of the picture instead of beneath.  
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
-  * If the fancy text is right aligned normal text is added on the left of the fancy text instead of beneath.  
+  * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.  
 * Line Numbers: display line numbers beforce any text (mostly used for code :-).
 ~~~text
-```figlet
+```lnums
 Line
 Line
 Line
