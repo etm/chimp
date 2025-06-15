@@ -1,0 +1,3 @@
+#what: Sixel Demo
+```sixel,50,center test.png
+aaa
