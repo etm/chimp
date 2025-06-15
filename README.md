@@ -43,8 +43,11 @@ Line
 ```
 ~~~
 
-During presenting you can use the usual button for navigating. In addition, you
-can use ``q`` to quit the presentation, and ``r`` to refresh the screen.
+While presenting you can use the usual button for navigating. In addition, you
+can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I suggest zooming
+the terminal until about 30 lines are visible. To make this easy a lightgray ``^`` character is
+visible on the rightmost column of the terminal. Zoom until the ``^`` character is no longer visible for
+the most audience friendly results.
 
 Check out the examples.
 
