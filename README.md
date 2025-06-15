@@ -5,7 +5,7 @@ CHIMP - Cheap IMpression Presenter
       ___ / /___    / _ \ \ ___
      / __| |/ _ \  | | | | |__ \
     | (__| | (_) | | |_| | |__) |
-     \___| |\_!!(_|_)!!__| |___/
+     \___| |\___(_|_)____| |___/
           \_\           /_/
 
 Make a cheap impression. Present via terminal.
@@ -23,6 +23,7 @@ It has a simple syntax:
     !!Bold Text!!
     ``Red Text``
     %%Blue Text%%
+    ~~Center Text
 
 Everything else is in plugins. The following plugins are existing for now:
 
