@@ -10,7 +10,7 @@ CHIMP - Cheap IMpression Presenter
 
 Make a cheap impression. Present via terminal.
 
-```gem install chimp```
+```gem install cheap-impression-presenter```
 
 It has a simple syntax:
 
@@ -42,6 +42,12 @@ Line
 Line
 ```
 ~~~
+
+Run the presentation with:
+
+```bash
+chimp mypresentation.txt
+```
 
 While presenting you can use the usual button for navigating. In addition, you
 can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I suggest zooming
