@@ -10,7 +10,7 @@ CHIMP - Cheap IMpression Presenter
 
 Make a cheap impression. Present via terminal.
 
-```gem install chimp``` 
+```gem install chimp```
 
 It has a simple syntax:
 
@@ -22,19 +22,19 @@ It has a simple syntax:
 
     !!Bold Text!!
     ``Red Text``
-    ```Blue Text```
+    %%Blue Text%%
 
 Everything else is in plugins. The following plugins are existing for now:
 
-* Sixel: display graphics in the terminal: ``%%sixel name.png``.
-* Figlet: display fancy ascii text: ``%%figlet FANCY_TEXT``.
+* Sixel: display graphics in the terminal: `````sixel name.png``.
+* Figlet: display fancy ascii text: `````figlet FANCY_TEXT``.
 * Line Numbers: display line numbers beforce any text.
 ```text
-%%figlet
+```figlet
 Line
 Line
 Line
-%%
+```
 ```
 
 During presenting you can use the usual button for navigating. In addition, you

@@ -3,21 +3,25 @@
 Jürgen Mangler
 mailto: juergen.mangler@gmail.com
 
-%%figlet CHIMP
+```figlet CHIMP
 
 Make a cheap impression. Present via terminal.
+
 ---
+
 * Bullet stuff
 * More Bullets
 +++
-%%lnums
+```lnums
 a = 3
 b = 7
 1.upto(b) do |l|
   bla
 end
-%%
+```
 +++
 * Finally
+
 ---
+
 ssss
