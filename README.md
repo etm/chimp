@@ -57,6 +57,11 @@ the most audience friendly results.
 
 Check out the examples.
 
+How does it look?
+=================
+
+![CHIMP Screenshot](chimp_screenshot.png)
+
 History & Thanks
 ================
 
