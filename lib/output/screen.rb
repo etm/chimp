@@ -71,7 +71,7 @@ module Window #{{{
     m = res.match /(?<column>\d+);(?<row>\d+)/
     [ Integer(m[:row]), Integer(m[:column]) ]
   rescue WinchErrror
-   [0,0]
+    [0,0]
   end
 end #}}}
 
@@ -117,6 +117,10 @@ module Chimp
         @screen.clear
         lines = @screen.lines
         columns = @screen.columns
+        ### print mark
+        @screen.set_pos columns-1, 30
+        @screen.print "\e[1;37m^\e[0m"
+        ### print footer
         @screen.set_pos 0, lines-1
         @screen.print "-"*columns
         @screen.set_pos 0, lines
@@ -143,7 +147,7 @@ module Chimp
             lines = @screen.lines
             columns = @screen.columns
             @screen.set_pos 0, lines
-            @screen.print "Press q to finish making a cheap impression."
+            @screen.print "Press 'q' to finish making a cheap impression..."
           end
           begin
           ch = @screen.getch
@@ -195,11 +199,11 @@ module Chimp
       end
       def mOP_INCLUDE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
+        eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
       end
       def mOP_RANGE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
+        eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
       end
 
       def mOP_STRONG(data); @screen.print "\e[1m"; end

@@ -1,0 +1,38 @@
+#what: Cooperate Demo
+```figlet,right TUM
+
+Chair of Information Systems and Business Process Management
+TUM School of Computation, Information and Technology
+Technical University of Munich
+
+
+
+
+
+
+
+
+!!''My Important Paper''!!
+
+Presenter: Juergen Mangler
+Authors:   Juergen Mangler, Stefanie Rinderle-Ma
+Contact:   juergen.mangler@tum.de
+
+---
+```figlet,right TUM
+
+
+
+
+
+
+
+
+```figlet,center Fin.
+
+
+
+
+
+!!''Questions?''!!
+Write to juergen.mangler@tum.de or talk to me.

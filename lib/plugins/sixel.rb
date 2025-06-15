@@ -2,7 +2,7 @@ module Chimp
   module Plugin
     class SIXEL < Base
       def process(what,parameters,screen,additional)
-        `img2sixel #{File.join(File.dirname(additional[:fname]),what)}`
+        screen.print `img2sixel #{File.join(File.dirname(additional[:fname]),what)}`.strip
       end
     end
   end

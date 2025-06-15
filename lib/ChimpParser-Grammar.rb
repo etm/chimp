@@ -32,16 +32,16 @@ module Chimp
       ### Optional functions called when a pattern occurs (m + patternname) ####
       def mP_INCLUDE(ts,ti,te)
         @tree.last.data = {}
-        @tree.last.data[:name] = ts[3..-1].split(',')[0].strip
-        @tree.last.data[:parameters] = ts[3..-1].split(',')[1]&.strip
+        @tree.last.data[:name] = ts[3..-1].strip.split(',')[0]
+        @tree.last.data[:parameters] = ts[3..-1].strip.split(',')[1..-1]
         @tree.last.data[:additional] = @parameters
         @tree.last.data[:what] = ti.lstrip
         ''
       end
       def mP_RANGE(ts,ti,te)
         @tree.last.data = {}
-        @tree.last.data[:name] = ts[3..-1].strip.split(',')[0].strip
-        @tree.last.data[:parameters] = ts[3..-1].split(',')[1]&.strip
+        @tree.last.data[:name] = ts[3..-1].strip.split(',')[0]
+        @tree.last.data[:parameters] = ts[3..-1].strip.split(',')[1..-1]
         @tree.last.data[:what] = ti.lstrip
         ''
       end

@@ -1,9 +1,0 @@
-#what: Xaver Demo
-
-Hallo Xaver
-
-```figlet Xaver
-
----
-
-Hallo Papa
