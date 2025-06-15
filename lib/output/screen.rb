@@ -202,6 +202,17 @@ module Chimp
         @screen.print eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
       end
 
+      def mOP_STRONG(data); @screen.print "\e[1m"; end
+      def mCP_STRONG(data); @screen.print "\e[0m"; end
+      def mOP_RED(data); @screen.print "\e[0;31m"; end
+      def mCP_RED(data); @screen.print "\e[0m"; end
+      def mOP_BLUE(data); @screen.print "\e[0;34m"; end
+      def mCP_BLUE(data); @screen.print "\e[0m"; end
+      def mOP_STRONGRED(data); @screen.print "\e[1;31m"; end
+      def mCP_STRONGRED(data); @screen.print "\e[0m"; end
+      def mOP_STRONGBLUE(data); @screen.print "\e[1;34m"; end
+      def mCP_STRONGBLUE(data); @screen.print "\e[0m"; end
+
       def string(data)
         @screen.print(data)
       end

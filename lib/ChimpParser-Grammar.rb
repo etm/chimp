@@ -13,9 +13,11 @@ module Chimp
       P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n)|\A/,               /^(?=\+\+\++)|\z/)
       P_RANGE       = Pattern.new("P_RANGE",       /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]*/, /^```[\t ]*(\n|\z)/)
       P_INCLUDE     = Pattern.new("P_INCLUDE",     /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]+/, /[\t ]*(\n|\z)/)
-      P_RED         = Pattern.new("P_STRONG",      /!!/,                                 /!!/)
-      P_BLUE        = Pattern.new("P_RED",         /''/,                                 /''/)
-      P_STRONG      = Pattern.new("P_BLUE",        /%%/,                                 /%%/)
+      P_STRONG      = Pattern.new("P_STRONG",      /!!/,                                 /!!/)
+      P_RED         = Pattern.new("P_RED",         /''/,                                 /''/)
+      P_BLUE        = Pattern.new("P_BLUE",        /%%/,                                 /%%/)
+      P_STRONGRED   = Pattern.new("P_STRONGRED",   /(!!''|''!!)/,                        /(''!!|!!'')/)
+      P_STRONGBLUE  = Pattern.new("P_STRONGBLUE",  /(!!%%|%%!!)/,                        /(%%!!|!!%%)/)
 
       #### Grammar ####
       #### ROOT must exist and holds the main first level patterns ####
@@ -24,11 +26,8 @@ module Chimp
 
       ROOT           = [ P_WHAT, P_SLIDES ]
       GP_SLIDES      = [ P_INCREMENTAL ]
-      GP_INCREMENTAL = [ P_RANGE, P_INCLUDE, P_STRONG, P_RED, P_BLUE ]
-      GP_RANGE       = [ P_STRONG, P_RED, P_BLUE ]
-      GP_RED         = [ P_STRONG ]
-      GP_BLUE        = [ P_STRONG ]
-      GP_STRONG      = [ P_RED, P_BLUE]
+      GP_INCREMENTAL = [ P_RANGE, P_INCLUDE, P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
+      GP_RANGE       = [ P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
 
       ### Optional functions called when a pattern occurs (m + patternname) ####
       def mP_INCLUDE(ts,ti,te)
@@ -40,7 +39,6 @@ module Chimp
         ''
       end
       def mP_RANGE(ts,ti,te)
-        $stdin.getch
         @tree.last.data = {}
         @tree.last.data[:name] = ts[3..-1].strip.split(',')[0].strip
         @tree.last.data[:parameters] = ts[3..-1].split(',')[1]&.strip
