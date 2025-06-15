@@ -118,8 +118,8 @@ module Chimp
         lines = @screen.lines
         columns = @screen.columns
         ### print mark
-        @screen.set_pos columns-1, 30
-        @screen.print "\e[1;37m^\e[0m"
+        @screen.set_pos columns, 30
+        @screen.print "\e[0;37m^\e[0m"
         ### print footer
         @screen.set_pos 0, lines-1
         @screen.print "-"*columns
