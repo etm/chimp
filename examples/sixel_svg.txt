@@ -1,0 +1,13 @@
+#what: Sixel Demo
+
+Animate the thing:
+
+```sixel,20 sixel_svg1.svg
+
+---
+
+Animate the thing:
+
+```sixel,20 sixel_svg2.svg
+
+Thats it folks.
