@@ -12,12 +12,15 @@ mailto: juergen.mangler@gmail.com
      \_\           /_/
 
 Make a cheap impression. Present via terminal.
+
 ---
+
 * Bullet stuff
 * More Bullets
 +++
 * Add some stuff
 * Thats about it
+
 ---
 
 Simple syntax:
@@ -59,9 +62,11 @@ The following code drives it:
 12:   end
 14:   print clear_code
 15: end
+
 ---
+
 Future ideas:
 
 * Combine it with erb to get inline ruby code
-* Use curses to get terminal resolution (possible differnt)
+* Use terminfos to get terminal resolution (possible differnt)
 * Integrate wiki like syntax => translate to terminal codes to support colors
