@@ -13,7 +13,7 @@ mailto: juergen.mangler@gmail.com
 
 make a cheap impression. present via terminal. with images.
 
-```sixel,31,center sixel.png
-~~Image: Luca Lopez, Getty Images
+```sixel,31,left sixel.png
+Image: Luca Lopez, Getty Images
 
 Thats it folks.
