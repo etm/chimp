@@ -219,7 +219,7 @@ endliche Ausführungszeit?
 Der stochastische Papagei
 von Emily M. Bender und Timnit Gebru (2021)
 
-```sixel,20,right,float algo/parrot.jpg
+```sixel,25,right,float algo/parrot.jpg
 +++
 * Wer hat die ''Verantwortung''?
   Wenn der Papagei einem Handwerker sagt was

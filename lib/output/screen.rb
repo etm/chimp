@@ -166,8 +166,9 @@ module Chimp
         @last = c.close
       end
       def mOP_INCREMENTAL(c,tree)
-        x, y = @screen.get_pos
-        c.userdata = { :x => x, :y => y }
+        @x, @y = @screen.get_pos
+        @drawn = []
+        c.userdata = { :x => @x, :y => @y, :drawn => @drawn }
       end
       #### the slide the incremental closing at i belongs to, which step it is, and how many steps the slide has
       def position(tree,i)
@@ -213,18 +214,15 @@ module Chimp
               raise TagMoveEvent, tree[pos-1].open
             end
             if tag.ttype == "P_INCREMENTAL"
-              pos = tag.open
-              tag = tree[pos]
-              columns = @screen.columns
-              #### get current position
-              x, y = @screen.get_pos
-              #### how many spaces needed
-              howmuch = ((y - tag.userdata[:y] + 1) * columns) - (columns - x) - tag.userdata[:x]
-              @screen.set_pos tag.userdata[:x], tag.userdata[:y]
-              # @screen.print x.to_s + ',' + y.to_s
-              @screen.print ' ' * howmuch
-              @screen.set_pos tag.userdata[:x], tag.userdata[:y]
-              ####
+              ### erase only what this step has drawn (pictures next to it stay), then wait at the end of the previous step again
+              step = tree[c.open].userdata
+              step[:drawn].each do |x1,y1,x2,y2|
+                y1.upto(y2) do |y|
+                  @screen.set_pos x1, y
+                  @screen.print ' ' * (x2-x1+1)
+                end
+              end
+              @screen.set_pos step[:x], step[:y]
               raise TagMoveEvent, pos
             end
             #}}}
@@ -248,13 +246,22 @@ module Chimp
         eval('Chimp::Plugin::' + data[:name].upcase).new.prepare(data[:what],data[:parameters],data[:additional])
       end
 
-      def mOP_INCLUDE(data)
+      #### plugins may return the area they drew as [x1,y1,x2,y2], otherwise the whole lines they printed on count
+      def process(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
+        area = eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
+        return unless @drawn
+        x, y = @screen.get_pos
+        @drawn << (area.is_a?(Array) && area.length == 4 ? area : [1, @y, @screen.columns, y])
+        @x, @y = x, y
+      end
+      private :process
+
+      def mOP_INCLUDE(data)
+        process data
       end
       def mOP_RANGE(data)
-        require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
-        eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
+        process data
       end
 
       def mOP_STRONG(data); @screen.print "\e[1m"; end
@@ -274,13 +281,24 @@ module Chimp
         len = @screen.columns
         if len-data > 0
           @screen.print ' ' * ((len - data) / 2)
+          @x += (len - data) / 2 if @drawn
         end
       end
       def mCP_CENTER(data)
-        @screen.print "\n"
+        string "\n"
       end
 
       def string(data)
+        ### remember which part of which line the current step prints, so going back can erase exactly that
+        data.split(/(\n)/).each do |part|
+          if part == "\n"
+            @x = 1
+            @y += 1
+          elsif !part.empty?
+            @drawn << [@x, @y, @x+part.length-1, @y]
+            @x += part.length
+          end
+        end if @drawn
         @screen.print(data)
       end
 

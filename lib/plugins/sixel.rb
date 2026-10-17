@@ -40,27 +40,30 @@ module Chimp
         end
 
         restore = parameters.include?('animate') || parameters.include?('float')
-        pos = screen.get_pos if restore
+        width = parameters[0].to_i
         len = screen.columns
+        pos = screen.get_pos
+        x, y = pos
         ### move instead of printing spaces, spaces would erase a picture already on this line
         if parameters.include? 'right'
-          x, y = screen.get_pos
-          screen.set_pos x + len-parameters[0].to_i, y
+          x += len-width
         elsif parameters.include? 'center'
-          x, y = screen.get_pos
-          screen.set_pos x + (len-parameters[0].to_i)/2, y
+          x += (len-width)/2
         end
+        screen.set_pos x, y
         if screen.respond_to?(:image) # pdf output
-          screen.image what, parameters[0].to_i, additional[:fname]
+          screen.image what, width, additional[:fname]
         else
-          screen.print sixel(what,parameters[0].to_i,additional[:fname])
+          screen.print sixel(what,width,additional[:fname])
         end
+        _, bottom = screen.get_pos
         if restore
           screen.set_pos *pos
         else
-          x, y = screen.get_pos
-          screen.set_pos 0,y
+          screen.set_pos 0, bottom
         end
+        ### the area the picture covers, so going back can erase exactly that
+        [x, y, x+width-1, bottom]
       end
     end
   end
