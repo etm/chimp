@@ -12,17 +12,29 @@ Make a cheap impression. Present via terminal.
 
 ```gem install cheap-impression-presenter```
 
+The ruby gems it needs (tty-screen, pastel, hexapdf) are installed with it. Some
+features need external programs, which have to be installed separately (all are
+available in the usual linux distributions and homebrew):
+
+* ``figlet``: for the figlet plugin.
+* ``img2sixel`` (from libsixel): for the sixel plugin, i.e. pictures in the terminal.
+  Your terminal also needs sixel support.
+* ``inkscape``: for svg pictures, in the terminal as well as in the PDF output.
+* DejaVu Sans Mono font: for the PDF output. If it is not installed, Courier is
+  used, which lacks some characters (e.g. box drawing).
+
 It has a simple syntax:
 
     #what: the title of presentation
     #size: the number of lines to zoom to (default 31, see below)
+    #theme: the PDF theme, solarized_light (default) or solarized_dark
 
     --- splits slides
 
     +++ slides parts to appear
 
     !!Bold Text!!
-    ``Red Text``
+    ''Red Text''
     %%Blue Text%%
     ~~Center Text
 
@@ -32,10 +44,10 @@ Everything else is in plugins. The following plugins are existing for now:
   * The parameter 20 denotes the size in characters.
   * You can add right or center as an additional parameter to align the picture.
   * If the picture is right aligned and float is added as an additional parameter, text is added on the left of the picture instead of beneath.
-  * You can add animate as an additional parameter to return the cursor to where the picture started. Text that follows is then added on top of the picture instead of beneath. Combined with +++ the next picture replaces the current one, which allows for simple animations (see examples/sixel_svg.2.txt).  
+  * You can add animate as an additional parameter to return the cursor to where the picture started. Text that follows is then added on top of the picture instead of beneath. Combined with +++ the next picture replaces the current one, which allows for simple animations (see examples/sixel_svg.2.txt).
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
-  * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.  
+  * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.
 * Line Numbers: display line numbers beforce any text (mostly used for code :-).
 ~~~text
 ```lnums
@@ -82,11 +94,22 @@ into graphics anyway, which I create with dedicated tools.
 Drop me a note if you want to be a contributor, or send me merge request if you
 have created some plugins. Creating plugins is very simple :-)
 
-Missing Features
-================
+PDF Output
+==========
 
-Presenting is nice. A PDF output mode would be useful ... to send the presentation
-to people in one file.
+To send the presentation to people in one file, write it to a PDF:
+
+```bash
+chimp -o pdf mypresentation.txt
+```
+
+This writes mypresentation.pdf to the directory you are currently in.
+
+By default the slides are (default) 31 lines high, as if you zoomed the
+terminal.  It respects the size header. Pictures are embedded as vector
+graphics for SVGs or as images for everything else. The default theme is
+solarized light. Add ``#theme: solarized_dark`` to the header of the
+presentation for a dark version.
 
 LICENSE
 =======

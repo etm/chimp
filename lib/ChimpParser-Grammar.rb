@@ -11,6 +11,7 @@ module Chimp
       P_SLIDES      = Pattern.new("P_SLIDES",      /---+.*?(\z|\n)|\A/,                  /^(?=---+)|\z/)
       P_WHAT        = Pattern.new("P_WHAT",        /^#\s*what:\s*/,                      /[\t ]*(\n|\z)/)
       P_SIZE        = Pattern.new("P_SIZE",        /^#\s*size:\s*/,                      /[\t ]*(\n|\z)/)
+      P_THEME       = Pattern.new("P_THEME",       /^#\s*theme:\s*/,                     /[\t ]*(\n|\z)/)
       P_INCREMENTAL = Pattern.new("P_INCREMENTAL", /\+\+\++.*?(\z|\n)|\A/,               /^(?=\+\+\++)|\z/)
       P_RANGE       = Pattern.new("P_RANGE",       /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]*/, /^```[\t ]*(\n|\z)/)
       P_INCLUDE     = Pattern.new("P_INCLUDE",     /^```([a-z0-9_]+,)*[a-z0-9_]+[\t ]+/, /[\t ]*(\n|\z)/)
@@ -26,7 +27,7 @@ module Chimp
       #### G + patternname is selected to look up nested patterns ####
       #### If G + patternname not exists, [] is assumend ####
 
-      ROOT           = [ P_WHAT, P_SIZE, P_SLIDES ]
+      ROOT           = [ P_WHAT, P_SIZE, P_THEME, P_SLIDES ]
       GP_SLIDES      = [ P_INCREMENTAL ]
       GP_INCREMENTAL = [ P_CENTER, P_RANGE, P_INCLUDE, P_STRONGRED, P_STRONGBLUE, P_STRONG, P_RED, P_BLUE ]
 
@@ -57,6 +58,10 @@ module Chimp
       end
       def mP_SIZE(ts,ti,te)
         @tree.last.data = ti.to_i
+        ''
+      end
+      def mP_THEME(ts,ti,te)
+        @tree.last.data = ti
         ''
       end
     end

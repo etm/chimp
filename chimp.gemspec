@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'tty-screen', '~> 0.8'
   s.add_runtime_dependency 'pastel', '~> 0.8'
+  s.add_runtime_dependency 'hexapdf', '~> 1.0'
 end

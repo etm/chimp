@@ -39,7 +39,6 @@ module Chimp
           return
         end
 
-        printit = sixel(what,parameters[0].to_i,additional[:fname])
         restore = parameters.include?('animate') || parameters.include?('float')
         pos = screen.get_pos if restore
         len = screen.columns
@@ -48,7 +47,11 @@ module Chimp
         elsif parameters.include? 'center'
           screen.print " " * ((len-parameters[0].to_i)/2)
         end
-        screen.print printit
+        if screen.respond_to?(:image) # pdf output
+          screen.image what, parameters[0].to_i, additional[:fname]
+        else
+          screen.print sixel(what,parameters[0].to_i,additional[:fname])
+        end
         if restore
           screen.set_pos *pos
         else

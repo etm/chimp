@@ -83,7 +83,7 @@ module Chimp
       #### mO + patternname for opening tags ####
       #### mC + patternname for closing tags ####
 
-      def initialize() #{{{
+      def initialize(fname) #{{{
         @scounter = @ccounter = 0
         @what = ''
         @size = 31
