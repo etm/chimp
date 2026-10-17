@@ -18,7 +18,10 @@ available in the usual linux distributions and homebrew):
 
 * ``figlet``: for the figlet plugin.
 * ``img2sixel`` (from libsixel): for the sixel plugin, i.e. pictures in the terminal.
-  Your terminal also needs sixel support.
+  Your terminal also needs sixel support. On linux a VTE based terminal with
+  sixel enabled works well, e.g. Black Box
+  (https://flathub.org/apps/com.raggesilver.BlackBox), where sixel has to be
+  switched on in the preferences.
 * ``inkscape``: for svg pictures, in the terminal as well as in the PDF output.
 * DejaVu Sans Mono font: for the PDF output. If it is not installed, Courier is
   used, which lacks some characters (e.g. box drawing).
