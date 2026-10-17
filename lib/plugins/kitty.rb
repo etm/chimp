@@ -70,6 +70,7 @@ module Chimp
         if screen.respond_to?(:image) # pdf output
           screen.image what, width, additional[:fname]
           _, bottom = screen.get_pos
+          last = bottom
           erase = nil
         else
           data = png(what,width,additional[:fname])
@@ -78,6 +79,8 @@ module Chimp
           w, h = data[16,8].unpack('NN')
           cw, ch = cell_size
           bottom = y + (width * cw * h / (w * ch).to_f).ceil
+          ### bottom is the line after the picture, erasing it would erase what is there (e.g. the footer)
+          last = bottom - 1
           id = rand(1...2**31)
           ### a picture drawn at the same place as another one replaces it (e.g. for animations). only its placement
           ### goes, the terminal keeps the data so going back can show it again. clearing the screen (next slide)
@@ -107,7 +110,7 @@ module Chimp
           screen.set_pos 0, bottom
         end
         ### the area the picture covers, so going back can erase exactly that
-        [x, y, x+width-1, bottom, erase].compact
+        [x, y, x+width-1, last, erase].compact
       end
     end
   end
