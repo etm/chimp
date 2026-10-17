@@ -21,6 +21,7 @@ module Chimp
       WIDTH  = 960 # 16:9 page in points
       HEIGHT = 540
       MARGIN = 20
+      CELL   = 2.1 # character cell height / width, as in a terminal with 10x21 pixel cells, so pictures cover the same number of lines
 
       #### a virtual terminal that collects what is printed into a character grid {{{
       class Terminal
@@ -127,8 +128,8 @@ module Chimp
       #### the slide always has @size lines, the last two of which are the footer
       def finish_prepare #{{{
         @rowh = (HEIGHT - 2 * MARGIN).to_f / @size
-        @fsize = @rowh / 1.2
-        @cw = @font.decode_utf8('M').first.width * @fsize / 1000.0
+        @cw = @rowh / CELL
+        @fsize = @cw * 1000.0 / @font.decode_utf8('M').first.width
         columns = ((WIDTH - 2 * MARGIN) / @cw).floor
         @left = (WIDTH - columns * @cw) / 2.0
         @screen = Terminal.new(columns, @size - 2, self)
