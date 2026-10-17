@@ -1,7 +1,7 @@
 #what: Cooperate Demo
-#theme: background=#fdf6e3 text=#657b83 bold=#586e75 red=#dc322f blue=#268bd2 footer=#93a1a1
-#size: 25
-#template: ```figlet,right TUM
+#theme: background=#0065bd text=#b3d1ed bold=#ffffff red=#ffb3b3 blue=#a6e4ff footer=#d0d4d9
+#size: 26
+#template: ```figlet,right,bold TUM
 
 Chair of Information Systems and Business Process Management
 TUM School of Computation, Information and Technology
@@ -21,6 +21,7 @@ Authors:   Juergen Mangler, Stefanie Rinderle-Ma
 Contact:   juergen.mangler@tum.de
 
 ---
+#theme: background=#ffffff text=#33506e bold=#000000 red=#c53030 blue=#0065bd footer=#8a9199
 
 
 
@@ -28,8 +29,7 @@ Contact:   juergen.mangler@tum.de
 
 
 
-
-```figlet,center Fin.
+```figlet,center,bold Fin.
 
 
 

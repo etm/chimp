@@ -139,7 +139,8 @@ module Chimp
         nil
       end #}}}
 
-      def mPP_THEME(data) #{{{
+      #### a #theme: in a slide overrides colors from this point on
+      def mOP_THEME(data) #{{{
         data.split.each do |pair|
           key, color = pair.split('=',2)
           unless THEME.key?(key.to_sym) && color =~ /\A#?(\h{6})\z/

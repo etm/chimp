@@ -2,6 +2,7 @@ module Chimp
   module Plugin
     class FIGLET < Base
       def process(what,parameters,screen,additional)
+        screen.print "\e[1m" if parameters.include? 'bold'
         if parameters.include? 'right'
           pos = screen.get_pos
           len = screen.columns
@@ -17,6 +18,7 @@ module Chimp
         else
           screen.print `figlet #{what}`
         end
+        screen.print "\e[0m" if parameters.include? 'bold'
       end
     end
   end

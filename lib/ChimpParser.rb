@@ -30,7 +30,7 @@ module Chimp
     class TagContentSkipEvent < Exception; end
 
     class Output
-      SIZE = 28 # default number of lines of a slide (including the footer), #size: overrides
+      SIZE = 26 # default number of lines of a slide (including the footer), #size: overrides
 
       def finish_prepare
       end

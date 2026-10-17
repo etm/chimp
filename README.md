@@ -26,7 +26,7 @@ available in the usual linux distributions and homebrew):
 It has a simple syntax:
 
     #what: the title of presentation
-    #size: the number of lines to zoom to (default 28, see below)
+    #size: the number of lines to zoom to (default 26, see below)
     #theme: the PDF colors, e.g. background=#fdf6e3 text=#657b83 (see below)
     #template: content drawn before anything else on the slide (e.g. ```figlet,right LOGO)
     #template:
@@ -56,6 +56,7 @@ Everything else is in plugins. The following plugins are existing for now:
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
   * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.
+  * You can add bold as an additional parameter to display the fancy text in bold (in the PDF in the bold color).
 * Line Numbers: display line numbers beforce any text (mostly used for code :-).
 ~~~text
 ```lnums
@@ -76,11 +77,12 @@ chimp mypresentation.txt
 ```
 
 While presenting you can use the usual button for navigating. In addition, you
-can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I suggest zooming
-the terminal until about 28 lines are visible. To make this easy a ``^`` character is
-visible at the right end of the footer line. Zoom until the ``^`` character is no longer visible for
-the most audience friendly results. The ``^`` is shown as long as more than 28 lines are visible,
-use ``#size:`` directly after ``#what:`` to change this number.
+can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I
+suggest zooming the terminal until about 26 lines are visible. To make this
+easy a ``^`` character is visible at the right end of the footer line. Zoom
+until the ``^`` character is no longer visible for the most audience friendly
+results. The ``^`` is shown as long as more than 26 lines are visible, use
+``#size:`` directly after ``#what:`` to change this number.
 
 Check out the examples.
 
@@ -117,9 +119,9 @@ chimp -o pdf mypresentation.txt
 
 This writes mypresentation.pdf to the directory you are currently in.
 
-By default the slides are 28 lines high, as if you zoomed the
-terminal.  It respects the size header. Pictures are embedded as vector
-graphics for SVGs or as images for everything else.
+By default the slides are 26 lines high, as if you zoomed the terminal. It
+respects the size header. Pictures are embedded as vector graphics for SVGs or
+as images for everything else.
 
 The default colors are solarized light. Change them with a ``#theme:`` line in
 the header, holding KEY=#RRGGBB pairs for background, text, bold, red, blue and
@@ -128,6 +130,9 @@ footer. Colors you leave out keep their default. Solarized dark for example:
     #theme: background=#002b36 text=#839496 bold=#93a1a1 red=#dc322f blue=#268bd2 footer=#586e75
 
 examples/chimp.txt (light) and examples/markus.txt (dark) show both.
+
+A ``#theme:`` line can also be put on any slide (on a line of its own). It
+overrides the given colors from there on, for this and all following slides.
 
 LICENSE
 =======
