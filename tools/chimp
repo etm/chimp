@@ -26,8 +26,15 @@ if ARGV.length == 0 || !File.exist?(ARGV[0])
 end
 
 fname = File.realpath(ARGV[0])
-grammy = Chimp::Parser::SimpleGrammar.parse File::read(fname), :fname => fname
 require_relative "../lib/output/#{output}"
-screen = Chimp::Parser.const_get(output.capitalize).new fname
-grammy.prepare screen
-grammy.output screen
+goto = nil
+begin
+  grammy = Chimp::Parser::SimpleGrammar.parse File::read(fname), :fname => fname
+  screen = Chimp::Parser.const_get(output.capitalize).new fname
+  screen.goto = goto if goto
+  grammy.prepare screen
+  grammy.output screen
+rescue Chimp::Parser::ReloadEvent => e # refresh
+  goto = e.goto
+  retry
+end

@@ -28,6 +28,13 @@ module Chimp
     class TagSkipEvent < Exception; end
     class TagMoveEvent < Exception; end
     class TagContentSkipEvent < Exception; end
+    class ReloadEvent < Exception
+      attr_reader :goto # [slide, step] to return to after reloading
+      def initialize(goto)
+        @goto = goto
+        super 'reload'
+      end
+    end
 
     class Output
       SIZE = 26 # default number of lines of a slide (including the footer), #size: overrides

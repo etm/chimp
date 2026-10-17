@@ -21,8 +21,19 @@ module Window #{{{
     nil
   end
   def self::getch()
+    number = nil
     loop do
-      case $stdin.getch
+      ch = $stdin.getch
+      if number
+        if ch =~ /\d/
+          number << ch
+          next
+        end
+        return [:goto, number.to_i] if ch == "\r" && !number.empty?
+        number = nil
+      end
+      case ch
+        when 'g' then number = ''
         when 'r' then return :refresh
         when 'q' then return :exit
         when "\r" then return :enter
@@ -83,12 +94,14 @@ module Chimp
       #### mO + patternname for opening tags ####
       #### mC + patternname for closing tags ####
 
+      attr_writer :goto
+
       def initialize(fname) #{{{
+        @goto = nil
         @scounter = @ccounter = 0
         @what = ''
         @size = SIZE
         @last = 0
-        @skip = -1
         @templates = []
 
         @format = Pastel.new
@@ -124,6 +137,8 @@ module Chimp
       end
       def mOP_SLIDES(c,tree)
         #{{{
+        ### after a reload, skip the slides before the one we were on
+        raise TagSkipEvent if @goto && c.userdata < [@goto[0], @scounter].min
         @screen.clear
         lines = @screen.lines
         columns = @screen.columns
@@ -154,9 +169,21 @@ module Chimp
         x, y = @screen.get_pos
         c.userdata = { :x => x, :y => y }
       end
+      #### the slide the incremental closing at i belongs to, which step it is, and how many steps the slide has
+      def position(tree,i)
+        b = i.downto(0).find { |x| tree[x].class == OpenTag && tree[x].ttype == "P_SLIDES" }
+        steps = tree[b..tree[b].close].select { |t| t.class == CloseTag && t.ttype == "P_INCREMENTAL" }
+        [b, steps.index(tree[i]) + 1, steps.length]
+      end
+      private :position
+
       def mCP_INCREMENTAL(c,tree,i)
-        return if @skip > i
-        @skip = -1
+        ### after a reload, show the steps up to the one we were on without waiting
+        if @goto
+          b, step, steps = position(tree,i)
+          return if step < [@goto[1], steps].min
+          @goto = nil
+        end
         ### on the first part of the first slide there is nothing to go back to
         pos = c.open-1
         first = tree[pos].ttype == "P_SLIDES" && tree[0...pos].none? { |t| t.class == OpenTag && t.ttype == "P_SLIDES" }
@@ -168,12 +195,17 @@ module Chimp
             @screen.print "Press 'q' to finish making a cheap impression..."
           end
           begin
-          ch = @screen.getch
+          ch, slide = @screen.getch
           rescue Window::WinchError
             ch = :refresh
           end
-        end while (first && ch == :previous) || (@last == i && ![:previous, :exit, :refresh].include?(ch))
+        end while (first && ch == :previous) || (@last == i && ![:previous, :exit, :refresh, :goto].include?(ch))
         case ch
+          when :goto
+            #{{{
+            slide = slide.clamp(1, @scounter)
+            raise TagMoveEvent, tree.index { |t| t.class == OpenTag && t.ttype == "P_SLIDES" && t.userdata == slide }
+            #}}}
           when :previous
             #{{{
             tag = tree[pos]
@@ -198,12 +230,9 @@ module Chimp
             #}}}
           when :refresh
             #{{{
-            (c.open-1).downto(0) do |b|
-              if tree[b].class == OpenTag && tree[b].ttype == "P_SLIDES"
-                @skip = i
-                raise TagMoveEvent, b
-              end
-            end
+            ### reparse the presentation (it may have changed) and return to the same slide and step
+            b, step, steps = position(tree,i)
+            raise ReloadEvent, [tree[b].userdata, step]
             #}}}
           when :exit
             @screen.finish

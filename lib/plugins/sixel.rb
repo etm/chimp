@@ -42,10 +42,13 @@ module Chimp
         restore = parameters.include?('animate') || parameters.include?('float')
         pos = screen.get_pos if restore
         len = screen.columns
+        ### move instead of printing spaces, spaces would erase a picture already on this line
         if parameters.include? 'right'
-          screen.print " " * (len-parameters[0].to_i)
+          x, y = screen.get_pos
+          screen.set_pos x + len-parameters[0].to_i, y
         elsif parameters.include? 'center'
-          screen.print " " * ((len-parameters[0].to_i)/2)
+          x, y = screen.get_pos
+          screen.set_pos x + (len-parameters[0].to_i)/2, y
         end
         if screen.respond_to?(:image) # pdf output
           screen.image what, parameters[0].to_i, additional[:fname]
