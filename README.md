@@ -50,13 +50,21 @@ Everything else is in plugins. The following plugins are existing for now:
 
 * Sixel: display graphics in the terminal: `` ```sixel,20 name.png``.
   * The parameter 20 denotes the size in characters.
-  * You can add right or center as an additional parameter to align the picture.
-  * If the picture is right aligned and float is added as an additional parameter, text is added on the left of the picture instead of beneath.
-  * You can add animate as an additional parameter to return the cursor to where the picture started. Text that follows is then added on top of the picture instead of beneath. Combined with +++ the next picture replaces the current one, which allows for simple animations (see examples/sixel_svg.2.txt).
+  * You can add right or center as an additional parameter to align the
+    picture.
+  * If the picture is right aligned and float is added as an additional
+    parameter, text is added on the left of the picture instead of beneath.
+  * You can add animate as an additional parameter to return the cursor to
+    where the picture started. Text that follows is then added on top of the
+    picture instead of beneath. Combined with +++ the next picture replaces the
+    current one, which allows for simple animations (see
+    examples/sixel_svg.2.txt).
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
-  * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.
-  * You can add bold as an additional parameter to display the fancy text in bold (in the PDF in the bold color).
+  * If the fancy text is right aligned, normal text is added on the left of the
+    fancy text instead of beneath.
+  * You can add bold as an additional parameter to display the fancy text in
+    bold (in the PDF in the bold color).
 * Line Numbers: display line numbers beforce any text (mostly used for code :-).
 ~~~text
 ```lnums
@@ -91,27 +99,11 @@ How does it look?
 
 ![CHIMP Screenshot](chimp_screenshot.png)
 
-History & Thanks
-================
-
-Amy Hoy all the way back in 2009 allowed me to use her monkey ascii art for the CHIMP. The
-CHIMP was written as an icebreaker for the curucamp, which was a ruby
-un-conference in 2009 in Vienna. We had fun, and many cool people from the
-community attended.
-
-I am still using the CHIMP for scientifc presentations, and as sixel terminals
-finally are more common, I tried to polish the CHIMP up (2025) and make it available
-for easy consumption. Maybe you like it. I use it because I can create
-presentations faster than in PP, KN, other programs. Most of the work goes
-into graphics anyway, which I create with dedicated tools.
-
-Drop me a note if you want to be a contributor, or send me merge request if you
-have created some plugins. Creating plugins is very simple :-)
-
 PDF Output
 ==========
 
-To send the presentation to people in one file, write it to a PDF:
+Presenting is nice. Sending presentations to people is sometimes mandatory. But many
+people have not embraced the terminal (yet). So send them a PDF:
 
 ```bash
 chimp -o pdf mypresentation.txt
@@ -132,7 +124,24 @@ footer. Colors you leave out keep their default. Solarized dark for example:
 examples/chimp.txt (light) and examples/markus.txt (dark) show both.
 
 A ``#theme:`` line can also be put on any slide (on a line of its own). It
-overrides the given colors from there on, for this and all following slides.
+overrides the given colors for all subsequent slides.
+
+History & Thanks
+================
+
+Amy Hoy all the way back in 2009 allowed me to use her monkey ascii art for the
+CHIMP. The CHIMP was written as an icebreaker for the curucamp, which was a
+ruby un-conference in 2009 in Vienna. We had fun, and many cool people from the
+community attended.
+
+I am still using the CHIMP for scientifc presentations, and as sixel terminals
+finally are more common, I tried to polish the CHIMP up (2025) and make it
+available for easy consumption. Maybe you like it. I use it because I can
+create presentations faster than in PP, KN, other programs. Most of the work
+goes into graphics anyway, which I create with dedicated tools.
+
+Drop me a note if you want to be a contributor, or send me merge request if you
+have created some plugins. Creating plugins is very simple :-)
 
 LICENSE
 =======
