@@ -189,7 +189,7 @@ module Chimp
               #### how many spaces needed
               howmuch = ((y - tag.userdata[:y] + 1) * columns) - (columns - x) - tag.userdata[:x]
               @screen.set_pos tag.userdata[:x], tag.userdata[:y]
-              @screen.print x.to_s + ',' + y.to_s
+              # @screen.print x.to_s + ',' + y.to_s
               @screen.print ' ' * howmuch
               @screen.set_pos tag.userdata[:x], tag.userdata[:y]
               ####
