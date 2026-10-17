@@ -17,11 +17,17 @@ features need external programs, which have to be installed separately (all are
 available in the usual linux distributions and homebrew):
 
 * ``figlet``: for the figlet plugin.
-* ``img2sixel`` (from libsixel): for the sixel plugin, i.e. pictures in the terminal.
-  Your terminal also needs sixel support. On linux a VTE based terminal with
-  sixel enabled works well, e.g. Black Box
-  (https://flathub.org/apps/com.raggesilver.BlackBox), where sixel has to be
-  switched on in the preferences.
+* Pictures in the terminal need a terminal that supports either sixel or the
+  kitty graphics protocol. The pic plugin finds out which one your terminal
+  has and uses it, so you only need the program for that one:
+  * ``img2sixel`` (from libsixel): for sixel (the sixel plugin). On linux a
+    VTE based terminal with sixel enabled works well, e.g. Black Box
+    (https://flathub.org/apps/com.raggesilver.BlackBox), where sixel has to be
+    switched on in the preferences.
+  * ``magick`` (ImageMagick 7): for the kitty graphics protocol (the kitty
+    plugin), e.g. in kitty (https://sw.kovidgoyal.net/kitty/), Ghostty
+    (https://ghostty.org) or WezTerm (https://wezterm.org). Pictures are sent
+    through the terminal, so this also works via ssh.
 * ``inkscape``: for svg pictures, in the terminal as well as in the PDF output.
 * DejaVu Sans Mono font: for the PDF output. If it is not installed, Courier is
   used, which lacks some characters (e.g. box drawing).
@@ -51,6 +57,11 @@ their own center parameter.
 
 Everything else is in plugins. The following plugins are existing for now:
 
+* Pic: display graphics in the terminal, with whatever the terminal supports
+  (kitty graphics protocol or sixel, kitty if both, nothing if neither):
+  `` ```pic,20 name.png``. This is the one to use, it takes the same
+  parameters as Sixel (see below). If the detection is wrong, set
+  ``CHIMP_PIC`` to ``kitty``, ``sixel`` or ``none``.
 * Sixel: display graphics in the terminal: `` ```sixel,20 name.png``.
   * The parameter 20 denotes the size in characters.
   * You can add right or center as an additional parameter to align the
@@ -62,14 +73,8 @@ Everything else is in plugins. The following plugins are existing for now:
     picture instead of beneath. Combined with +++ the next picture replaces the
     current one, which allows for simple animations (see
     examples/sixel_svg.2.txt).
-* Kitty: the same as Sixel, but with the kitty graphics protocol (kitty,
-  ghostty, wezterm, konsole): `` ```kitty,20 name.png``. All parameters of
-  the Sixel plugin work. Needs ``magick`` (ImageMagick) instead of
-  ``img2sixel``.
-* Pic: use Kitty or Sixel, whatever the terminal supports (Kitty if both),
-  nothing if neither: `` ```pic,20 name.png``. All parameters of the Sixel
-  plugin work. If the detection is wrong, set ``CHIMP_PIC`` to ``kitty``,
-  ``sixel`` or ``none``.
+* Kitty: the same as Sixel, but with the kitty graphics protocol:
+  `` ```kitty,20 name.png``. All parameters of the Sixel plugin work.
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
   * If the fancy text is right aligned, normal text is added on the left of the
