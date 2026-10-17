@@ -6,15 +6,11 @@ module Chimp
   class Parser
 
     class Pdf < Screen
-      THEMES = {
-        'solarized_light' => {
-          :background => 'fdf6e3', :normal => '657b83', :strong => '586e75',
-          :red => 'dc322f', :blue => '268bd2', :footer => '93a1a1'
-        },
-        'solarized_dark' => {
-          :background => '002b36', :normal => '839496', :strong => '93a1a1',
-          :red => 'dc322f', :blue => '268bd2', :footer => '586e75'
-        }
+      #### solarized light, #theme: in the header overrides single colors, e.g.
+      #### #theme: background=#002b36 text=#839496 bold=#93a1a1 footer=#586e75
+      THEME = {
+        :background => 'fdf6e3', :text => '657b83', :bold => '586e75',
+        :red => 'dc322f', :blue => '268bd2', :footer => '93a1a1'
       }
       FONTS = [
         %w(/usr/share/fonts/dejavu-sans-mono-fonts/DejaVuSansMono.ttf /usr/share/fonts/dejavu-sans-mono-fonts/DejaVuSansMono-Bold.ttf),
@@ -118,7 +114,7 @@ module Chimp
         @skip = -1
 
         @fname = File.basename(fname,'.*') + '.pdf'
-        @theme = THEMES['solarized_light']
+        @theme = THEME.dup
         @doc = HexaPDF::Document.new
         @doc.config['font.on_missing_glyph'] = proc { |char,font| font.decode_utf8('?').first }
         regular, bold = FONTS.find { |f| f.all? { |e| File.exist?(e) } }
@@ -142,9 +138,15 @@ module Chimp
         nil
       end #}}}
 
-      def mPP_THEME(data)
-        @theme = THEMES[data] or abort "Unknown theme '#{data}', use one of: #{THEMES.keys.join(', ')}"
-      end
+      def mPP_THEME(data) #{{{
+        data.split.each do |pair|
+          key, color = pair.split('=',2)
+          unless THEME.key?(key.to_sym) && color =~ /\A#?(\h{6})\z/
+            abort "Invalid #theme: entry '#{pair}', use KEY=#RRGGBB with KEY one of: #{THEME.keys.join(', ')}"
+          end
+          @theme[key.to_sym] = $1
+        end
+      end #}}}
 
       def mOP_SLIDES(c,tree)
         @page = c.userdata
@@ -196,7 +198,7 @@ module Chimp
 
         @screen.each_run do |x,y,text,bold,color|
           canvas.font(bold ? @bold : @font, :size => @fsize)
-          canvas.fill_color(@theme[color || (bold ? :strong : :normal)])
+          canvas.fill_color(@theme[color || (bold ? :bold : :text)])
           canvas.text(text, :at => [@left + (x - 1) * @cw, baseline(y)])
         end
 

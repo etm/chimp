@@ -27,7 +27,7 @@ It has a simple syntax:
 
     #what: the title of presentation
     #size: the number of lines to zoom to (default 31, see below)
-    #theme: the PDF theme, solarized_light (default) or solarized_dark
+    #theme: the PDF colors, e.g. background=#fdf6e3 text=#657b83 (see below)
 
     --- splits slides
 
@@ -107,9 +107,15 @@ This writes mypresentation.pdf to the directory you are currently in.
 
 By default the slides are (default) 31 lines high, as if you zoomed the
 terminal.  It respects the size header. Pictures are embedded as vector
-graphics for SVGs or as images for everything else. The default theme is
-solarized light. Add ``#theme: solarized_dark`` to the header of the
-presentation for a dark version.
+graphics for SVGs or as images for everything else.
+
+The default colors are solarized light. Change them with a ``#theme:`` line in
+the header, holding KEY=#RRGGBB pairs for background, text, bold, red, blue and
+footer. Colors you leave out keep their default. Solarized dark for example:
+
+    #theme: background=#002b36 text=#839496 bold=#93a1a1 red=#dc322f blue=#268bd2 footer=#586e75
+
+examples/chimp.txt (light) and examples/markus.txt (dark) show both.
 
 LICENSE
 =======
