@@ -62,6 +62,14 @@ Everything else is in plugins. The following plugins are existing for now:
     picture instead of beneath. Combined with +++ the next picture replaces the
     current one, which allows for simple animations (see
     examples/sixel_svg.2.txt).
+* Kitty: the same as Sixel, but with the kitty graphics protocol (kitty,
+  ghostty, wezterm, konsole): `` ```kitty,20 name.png``. All parameters of
+  the Sixel plugin work. Needs ``magick`` (ImageMagick) instead of
+  ``img2sixel``.
+* Pic: use Kitty or Sixel, whatever the terminal supports (Kitty if both),
+  nothing if neither: `` ```pic,20 name.png``. All parameters of the Sixel
+  plugin work. If the detection is wrong, set ``CHIMP_PIC`` to ``kitty``,
+  ``sixel`` or ``none``.
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
   * If the fancy text is right aligned, normal text is added on the left of the

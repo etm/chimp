@@ -1,5 +1,4 @@
 #what: CHIMP - Cheap Impression Presenter
-#theme: background=#fdf6e3 text=#657b83 bold=#586e75 red=#dc322f blue=#268bd2 footer=#93a1a1
 
 Jürgen Mangler
 mailto: juergen.mangler@gmail.com

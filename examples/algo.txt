@@ -13,7 +13,6 @@ Information Systems and Business Process Management
 
 
 
-
 !!''Hasen, Karotten, Algorithmen''!!
 
 Dr. Juergen Mangler
@@ -28,7 +27,7 @@ Dr. Juergen Mangler
 Wie können Grundkonzepte der Informatik so vermittelt werden, dass
 es auch Spaß macht, und man sich etwas drunter vorstellen kann?
 
-```sixel,59,right,float algo/game.png
+```pic,59,right,float algo/game.png
 +++
 * Was sind
   ''Anweisungen''?
@@ -46,7 +45,7 @@ es auch Spaß macht, und man sich etwas drunter vorstellen kann?
 !!Algo the Bunny!!
 
 
-```sixel,25,right,float algo/bunny_education.png
+```pic,25,right,float algo/bunny_education.png
 Ziel: Erlernen der Spielgrundlagen
 
 * Schritte
@@ -63,7 +62,7 @@ Ziel: Erlernen der Spielgrundlagen
 !!Algo the Bunny - Adventure 1!!
 
 
-```sixel,61,center algo/game.png
+```pic,61,center algo/game.png
 ~~!!''Wir machen das gemeinsam!''!!
 
 ---
@@ -72,7 +71,7 @@ Ziel: Erlernen der Spielgrundlagen
 !!Labyrinthe ohne Schleifen!!
 
 
-```sixel,64,center algo/maze.png
+```pic,64,center algo/maze.png
 
 ---
 
@@ -80,27 +79,27 @@ Ziel: Erlernen der Spielgrundlagen
 !!Labyrinthe ohne Schleifen - Rechte Hand Methode!!
 
 
-```sixel,40,center,animate algo/righthand1.png
+```pic,40,center,animate algo/righthand1.png
 +++
-```sixel,40,center,animate algo/righthand2.png
+```pic,40,center,animate algo/righthand2.png
 +++
-```sixel,40,center,animate algo/righthand3.png
+```pic,40,center,animate algo/righthand3.png
 +++
-```sixel,40,center,animate algo/righthand4.png
+```pic,40,center,animate algo/righthand4.png
 +++
-```sixel,40,center,animate algo/righthand5.png
+```pic,40,center,animate algo/righthand5.png
 +++
-```sixel,40,center,animate algo/righthand6.png
+```pic,40,center,animate algo/righthand6.png
 +++
-```sixel,40,center,animate algo/righthand5.png
+```pic,40,center,animate algo/righthand5.png
 +++
-```sixel,40,center,animate algo/righthand7.png
+```pic,40,center,animate algo/righthand7.png
 +++
-```sixel,40,center,animate algo/righthand5.png
+```pic,40,center,animate algo/righthand5.png
 +++
-```sixel,40,center,animate algo/righthand7.png
+```pic,40,center,animate algo/righthand7.png
 +++
-```sixel,40,center,animate algo/righthand8.png
+```pic,40,center,animate algo/righthand8.png
 
 ---
 
@@ -108,7 +107,7 @@ Ziel: Erlernen der Spielgrundlagen
 !!Labyrinthe ohne Schleifen!!
 
 
-```sixel,58,center algo/maze_solved.png
+```pic,58,center algo/maze_solved.png
 
 ---
 
@@ -116,7 +115,7 @@ Ziel: Erlernen der Spielgrundlagen
 !!Labyrinthe mit Schleifen!!
 
 
-```sixel,64,center algo/maze_loops.png
+```pic,64,center algo/maze_loops.png
 
 ---
 
@@ -130,7 +129,7 @@ Ziel: Erlernen der Spielgrundlagen
 * Trémaux-Algorithmus
 * Algorithmus von Gaston Tarry
 * ...
-```sixel,40,center algo/hedge.jpg
+```pic,40,center algo/hedge.jpg
 
 ---
 
@@ -141,7 +140,7 @@ Ziel: Erlernen der Spielgrundlagen
 Algorithmen können hinsichtlich folgender
 Kriterien bewertet werden:
 
-```sixel,34,right,float algo/matrix.jpg
+```pic,34,right,float algo/matrix.jpg
 * ''Effektivität''
   Ist das Problem lösbar?
 * ''Korrektheit''
@@ -161,7 +160,7 @@ Kriterien bewertet werden:
 Hält ein Algorithmus an, d.h. besitzt er eine
 endliche Ausführungszeit?
 
-```sixel,32,right,float algo/42.jpg
+```pic,32,right,float algo/42.jpg
 * Programm hält an wenn eine der folgenden
   Regeln verletzt werden würde. Beispiel:
   - Hase fällt in ein Loch
@@ -184,7 +183,7 @@ endliche Ausführungszeit?
 !!Was machen wir damit?!!
 
 
-```sixel,65,center algo/lab.jpg
+```pic,65,center algo/lab.jpg
 
 ---
 
@@ -192,7 +191,7 @@ endliche Ausführungszeit?
 !!Was machen wir damit?!!
 
 
-```sixel,65,center algo/machine.jpg
+```pic,65,center algo/machine.jpg
 
 ---
 
@@ -200,7 +199,7 @@ endliche Ausführungszeit?
 !!Warum machen wir das?!!
 
 
-```sixel,26,right,float algo/process.png
+```pic,26,right,float algo/process.png
 * Wir wollen oder können nicht programmieren
 +++
 * Wir haben Handschuhe an
@@ -208,7 +207,7 @@ endliche Ausführungszeit?
 * Wir wollen ein Programm erklären
 +++
 
-```sixel,45 algo/code.png
+```pic,45 algo/code.png
 
 ---
 
@@ -219,7 +218,7 @@ endliche Ausführungszeit?
 Der stochastische Papagei
 von Emily M. Bender und Timnit Gebru (2021)
 
-```sixel,25,right,float algo/parrot.jpg
+```pic,25,right,float algo/parrot.jpg
 +++
 * Wer hat die ''Verantwortung''?
   Wenn der Papagei einem Handwerker sagt was
@@ -246,7 +245,7 @@ von Emily M. Bender und Timnit Gebru (2021)
 „KI könnte bis Ende des Jahrzehnts die
 ''Weltherrschaft an sich reißen''.“ (Jacob Coxon, 2026)
 
-```sixel,26 algo/pinky.png
+```pic,26 algo/pinky.png
 +++
 
 „%%Algo der Hase%% könnte bis Ende des

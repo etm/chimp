@@ -4,7 +4,18 @@ require 'io/console'
 
 module Window #{{{
   class WinchError < Exception; end
+
+  def self::sync_begin()
+    $stdout << "\e[?2026h"
+    $stdout.flush
+  end
+  def self::sync_end()
+    $stdout << "\e[?2026l"
+    $stdout.flush
+  end
+
   def self::init()
+    self::sync_begin
     self::clear
     $stdout << "\e[?25l"
     $stdout.flush
@@ -17,10 +28,11 @@ module Window #{{{
     self::clear
     self::set_pos 0, 0
     $stdout << "\e[?25h"
-    $stdout.flush
+    self::sync_end
     nil
   end
   def self::getch()
+    self::sync_end
     number = nil
     loop do
       ch = $stdin.getch
@@ -49,6 +61,8 @@ module Window #{{{
           end
       end
     end
+  ensure
+    self::sync_begin
   end
   def self::lines()
     TTY::Screen.lines
@@ -56,7 +70,13 @@ module Window #{{{
   def self::columns()
     TTY::Screen.columns
   end
+  #### how often the screen was cleared; plugins check if what they
+  #### drew is still there
+  def self::cleared()
+    @cleared || 0
+  end
   def self::clear()
+    @cleared = cleared + 1
     $stdout << "\e[2J"
     $stdout.flush
     self
@@ -216,11 +236,12 @@ module Chimp
             if tag.ttype == "P_INCREMENTAL"
               ### erase only what this step has drawn (pictures next to it stay), then wait at the end of the previous step again
               step = tree[c.open].userdata
-              step[:drawn].each do |x1,y1,x2,y2|
+              step[:drawn].each do |x1,y1,x2,y2,erase|
                 y1.upto(y2) do |y|
                   @screen.set_pos x1, y
                   @screen.print ' ' * (x2-x1+1)
                 end
+                erase.call if erase
               end
               @screen.set_pos step[:x], step[:y]
               raise TagMoveEvent, pos
@@ -246,13 +267,15 @@ module Chimp
         eval('Chimp::Plugin::' + data[:name].upcase).new.prepare(data[:what],data[:parameters],data[:additional])
       end
 
-      #### plugins may return the area they drew as [x1,y1,x2,y2], otherwise the whole lines they printed on count
+      #### plugins may return the area they drew as [x1,y1,x2,y2],
+      #### otherwise the whole lines they printed on count an
+      #### optional fifth element is called to erase, e.g., kitty pics
       def process(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
         area = eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
         return unless @drawn
         x, y = @screen.get_pos
-        @drawn << (area.is_a?(Array) && area.length == 4 ? area : [1, @y, @screen.columns, y])
+        @drawn << (area.is_a?(Array) && [4, 5].include?(area.length) ? area : [1, @y, @screen.columns, y])
         @x, @y = x, y
       end
       private :process
