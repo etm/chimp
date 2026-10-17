@@ -86,7 +86,7 @@ module Chimp
       def initialize(fname) #{{{
         @scounter = @ccounter = 0
         @what = ''
-        @size = 31
+        @size = SIZE
         @last = 0
         @skip = -1
         @templates = []
