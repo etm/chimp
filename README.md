@@ -28,6 +28,10 @@ It has a simple syntax:
     #what: the title of presentation
     #size: the number of lines to zoom to (default 31, see below)
     #theme: the PDF colors, e.g. background=#fdf6e3 text=#657b83 (see below)
+    #template: content drawn before anything else on the slide (e.g. ```figlet,right LOGO)
+    #template:
+      content drawn before anything else on the slide
+    #end
 
     --- splits slides
 
@@ -37,6 +41,10 @@ It has a simple syntax:
     ''Red Text''
     %%Blue Text%%
     ~~Center Text
+    ~~Center Text with !!Bold!!, ''Red'' and %%Blue%%
+
+Plugins can not be used in centered lines, they have
+their own center parameter.
 
 Everything else is in plugins. The following plugins are existing for now:
 
@@ -56,6 +64,10 @@ Line
 Line
 ```
 ~~~
+
+Templates should be positioned carefully (e.g. right aligned figlet or sixel) to
+not collide with the content. All header lines (#what, #size, #theme, #template)
+have to be at the very beginning of the presentation.
 
 Run the presentation with:
 

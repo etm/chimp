@@ -38,6 +38,35 @@ module Chimp
       def string(data)
         data
       end
+
+      #### calls the output method for element i of the tree, raises NameError if there is none
+      def dispatch(tree,i)
+        c = tree[i]
+        met, data = case c
+          when String then [method("string"), c]
+          when OpenTag then [method("mO" + c.ttype), c.data]
+          when CloseTag then [method("mC" + c.ttype), tree[c.open].data]
+        end
+        case met.arity
+          when 0; met.call
+          when 1; met.call(data)
+          when 2; met.call(c,tree)
+          when 3; met.call(c,tree,i)
+          when 4; met.call(c,tree,i,data)
+          else
+            ""
+        end
+      end
+
+      #### outputs a part of the tree again (e.g. a template for every slide)
+      def replay(tree,from,to)
+        from.upto(to) do |i|
+          begin
+            dispatch(tree,i)
+          rescue NameError
+          end
+        end
+      end
     end
 
     class Grammar
@@ -83,26 +112,7 @@ module Chimp
         while @tree.length > i
           c = @tree[i]
           begin
-            met = case
-              when c.class == String
-                data = c
-                output.method("string")
-              when c.class == OpenTag
-                data = c.data
-                output.method("mO" + c.ttype)
-              when c.class == CloseTag
-                data = @tree[c.open].data
-                output.method("mC" + c.ttype)
-            end
-            out << case met.arity
-              when 0; met.call
-              when 1; met.call(data)
-              when 2; met.call(c,@tree)
-              when 3; met.call(c,@tree,i)
-              when 4; met.call(c,@tree,i,data)
-              else
-                ""
-            end.to_s
+            out << output.dispatch(@tree,i).to_s
 
             i += 1
           rescue NameError => e

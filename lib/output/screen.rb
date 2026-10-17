@@ -89,12 +89,18 @@ module Chimp
         @size = 31
         @last = 0
         @skip = -1
+        @templates = []
 
         @format = Pastel.new
         @screen = Window
 
         @screen.init
       end #}}}
+
+      def template(tree)
+        @templates.each { |from,to| replay tree, from, to }
+        @screen.set_pos 0, 0
+      end
 
       def finish_output #{{{
         @screen.set_pos 0,  @screen.lines
@@ -130,7 +136,15 @@ module Chimp
         @screen.set_pos columns-num.length+1, lines
         @screen.print num
         @screen.set_pos 0, 0
+        template tree
         #}}}
+      end
+
+      def mPP_TEMPLATE(c,tree,i)
+        @templates << [i+1, c.close-1]
+      end
+      def mOP_TEMPLATE(data)
+        raise TagSkipEvent
       end
 
       def mPP_INCREMENTAL(c,tree,i)
@@ -225,7 +239,9 @@ module Chimp
       def mOP_STRONGBLUE(data); @screen.print "\e[1;34m"; end
       def mCP_STRONGBLUE(data); @screen.print "\e[0m"; end
 
-      def mOP_CENTER(data)
+      def mOP_CENTER(c,tree,i)
+        ### only the visible text counts, not the markup
+        data = tree[i+1...c.close].grep(String).sum(&:length)
         len = @screen.columns
         if len-data > 0
           @screen.print ' ' * ((len - data) / 2)

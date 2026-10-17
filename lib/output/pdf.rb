@@ -112,6 +112,7 @@ module Chimp
         @size = 31
         @last = 0
         @skip = -1
+        @templates = []
 
         @fname = File.basename(fname,'.*') + '.pdf'
         @theme = THEME.dup
@@ -151,6 +152,7 @@ module Chimp
       def mOP_SLIDES(c,tree)
         @page = c.userdata
         @screen.clear
+        template tree
       end
       #### every +++ step (animation frame) becomes a page of its own
       def mOP_INCREMENTAL(c,tree); end
