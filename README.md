@@ -30,7 +30,8 @@ Everything else is in plugins. The following plugins are existing for now:
 * Sixel: display graphics in the terminal: `` ```sixel,20 name.png``.
   * The parameter 20 denotes the size in characters.
   * You can add right or center as an additional parameter to align the picture.
-  * If the picture is right aligned, text is added on the left of the picture instead of beneath.  
+  * If the picture is right aligned and float is added as an additional parameter, text is added on the left of the picture instead of beneath.
+  * You can add animate as an additional parameter to return the cursor to where the picture started. Text that follows is then added on top of the picture instead of beneath. Combined with +++ the next picture replaces the current one, which allows for simple animations (see examples/sixel_svg.2.txt).  
 * Figlet: display fancy ascii text: `` ```figlet FANCY_TEXT``.
   * You can add right or center as a parameter to align the fancy text.
   * If the fancy text is right aligned, normal text is added on the left of the fancy text instead of beneath.  

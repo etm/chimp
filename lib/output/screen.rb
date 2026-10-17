@@ -197,6 +197,15 @@ module Chimp
             exit
         end
       end
+      def mPP_INCLUDE(data)
+        require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
+        eval('Chimp::Plugin::' + data[:name].upcase).new.prepare(data[:what],data[:parameters],data[:additional])
+      end
+      def mPP_RANGE(data)
+        require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
+        eval('Chimp::Plugin::' + data[:name].upcase).new.prepare(data[:what],data[:parameters],data[:additional])
+      end
+
       def mOP_INCLUDE(data)
         require File::dirname(__FILE__) + "/../plugins/#{data[:name]}.rb"
         eval('Chimp::Plugin::' + data[:name].upcase).new.process(data[:what],data[:parameters],@screen,data[:additional])
