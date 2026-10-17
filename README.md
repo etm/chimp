@@ -15,6 +15,7 @@ Make a cheap impression. Present via terminal.
 It has a simple syntax:
 
     #what: the title of presentation
+    #size: the number of lines to zoom to (default 31, see below)
 
     --- splits slides
 
@@ -52,9 +53,10 @@ chimp mypresentation.txt
 
 While presenting you can use the usual button for navigating. In addition, you
 can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I suggest zooming
-the terminal until about 30 lines are visible. To make this easy a lightgray ``^`` character is
-visible in the rightmost column of the terminal. Zoom until the ``^`` character is no longer visible for
-the most audience friendly results.
+the terminal until about 30 lines are visible. To make this easy a ``^`` character is
+visible at the right end of the footer line. Zoom until the ``^`` character is no longer visible for
+the most audience friendly results. The ``^`` is shown as long as more than 31 lines are visible,
+use ``#size:`` directly after ``#what:`` to change this number.
 
 Check out the examples.
 

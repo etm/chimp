@@ -70,7 +70,7 @@ module Window #{{{
     end
     m = res.match /(?<column>\d+);(?<row>\d+)/
     [ Integer(m[:row]), Integer(m[:column]) ]
-  rescue WinchErrror
+  rescue WinchError
     [0,0]
   end
 end #}}}
@@ -86,6 +86,7 @@ module Chimp
       def initialize() #{{{
         @scounter = @ccounter = 0
         @what = ''
+        @size = 31
         @last = 0
         @skip = -1
 
@@ -104,6 +105,9 @@ module Chimp
       def mPP_WHAT(data)
         @what = data
       end
+      def mPP_SIZE(data)
+        @size = data if data > 0
+      end
 
       def mPP_SLIDES(c,tree)
         #{{{
@@ -117,16 +121,13 @@ module Chimp
         @screen.clear
         lines = @screen.lines
         columns = @screen.columns
-        ### print mark
-        @screen.set_pos columns, 30
-        @screen.print "\e[0;37m^\e[0m"
-        ### print footer
         @screen.set_pos 0, lines-1
-        @screen.print "-"*columns
+        ### print footer, with a mark at the end
+        @screen.print (lines > @size ? ("-"*(columns-1) + "^") : "-"*columns)
         @screen.set_pos 0, lines
         @screen.print @what
         num = "#{c.userdata}/#{@scounter}"
-        @screen.set_pos columns-num.length, lines
+        @screen.set_pos columns-num.length+1, lines
         @screen.print num
         @screen.set_pos 0, 0
         #}}}
@@ -142,6 +143,9 @@ module Chimp
       def mCP_INCREMENTAL(c,tree,i)
         return if @skip > i
         @skip = -1
+        ### on the first part of the first slide there is nothing to go back to
+        pos = c.open-1
+        first = tree[pos].ttype == "P_SLIDES" && tree[0...pos].none? { |t| t.class == OpenTag && t.ttype == "P_SLIDES" }
         begin
           if @last == i
             lines = @screen.lines
@@ -154,18 +158,13 @@ module Chimp
           rescue Window::WinchError
             ch = :refresh
           end
-        end while @last == i && ![:previous, :exit, :refresh].include?(ch)
+        end while (first && ch == :previous) || (@last == i && ![:previous, :exit, :refresh].include?(ch))
         case ch
           when :previous
             #{{{
-            pos = c.open-1
             tag = tree[pos]
             if tag.ttype == "P_SLIDES"
-              if pos ==  0
-                raise TagMoveEvent, pos
-              else
-                raise TagMoveEvent, tree[pos-1].open
-              end
+              raise TagMoveEvent, tree[pos-1].open
             end
             if tag.ttype == "P_INCREMENTAL"
               pos = tag.open
