@@ -85,8 +85,16 @@ chimp mypresentation.txt
 ```
 
 While presenting you can use the usual button for navigating. In addition, you
-can use ``q`` to quit the presentation, and ``r`` to refresh the screen. I
-suggest zooming the terminal until about 26 lines are visible. To make this
+can use:
+
+* ``q`` to quit the presentation.
+* ``r`` to reload the presentation and refresh the screen. You stay on the
+  current slide and part, so you can edit the presentation while it is running
+  and see the changes immediately.
+* ``g`` followed by a slide number and enter to go to that slide (e.g.
+  ``g12<ENTER>``). Any other key cancels the goto.
+
+I suggest zooming the terminal until about 26 lines are visible. To make this
 easy a ``^`` character is visible at the right end of the footer line. Zoom
 until the ``^`` character is no longer visible for the most audience friendly
 results. The ``^`` is shown as long as more than 26 lines are visible, use
